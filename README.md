@@ -1,2 +1,2 @@
-# Xiaoyi_QQ
-Intelligent Open Source Robot Based on NTQQ
+# Xiaoyi_QQ_Bot
+基于NTQQ的智能开源机器人

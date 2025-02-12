@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>插件管理器</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        /* 头部导航栏样式 */
+        .navbar {
+            background-color: #4CAF50;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #d4d4d4;
+        }
+
+        /* 卡片通用样式 */
+        .system-info, .menu-section, .plugin-section, .admin-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .system-info:hover, .menu-section:hover, .plugin-section:hover, .admin-section:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* 进度条样式 */
+        .progress {
+            width: 100%;
+            background-color: #f1f1f1;
+            padding: 3px;
+            border-radius: 3px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            display: block;
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 3px;
+            transition: width 500ms ease-in-out;
+        }
+
+        /* CPU使用率颜色 */
+        .progress-bar.warning {
+            background-color: #ff9800;
+        }
+
+        .progress-bar.danger {
+            background-color: #f44336;
+        }
+
+        /* 按钮和表单样式 */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button[value="disable"] {
+            background-color: #f44336;
+        }
+
+        button[value="disable"]:hover {
+            background-color: #d32f2f;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        /* 列表样式 */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #e9ecef;
+        }
+
+        .info-link {
+            color: #1890ff;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .info-link:hover {
+            color: #40a9ff;
+            text-decoration: underline;
+        }
+
+        /* 错误提示样式 */
+        .error-message {
+            color: #f44336;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #ffebee;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body></body>
+    <!-- 头部导航栏 -->
+    <div class="navbar">
+        <div>
+            <a href="/">首页</a>
+            <a href="/plugins">插件管理</a>
+            <a href="/system">系统状态</a>
+            <a href="/logs">查看日志</a>
+            <a href="/send_message">发送消息</a>
+            <a href="/history">历史消息</a>
+        </div>
+        <div>
+            <a href="/logout">登出</a>
+        </div>
+    </div>
+
+    <!-- 错误提示区域 -->
+    <div id="error-message" class="error-message"></div>
+
+    <!-- 系统状态部分 -->
+    <div class="system-info" id="system-info">
+        <h2>系统状态监控</h2>
+        <div class="basic-info">
+            <h3>基本信息</h3>
+            <p>操作系统: <span id="os">{{ system_info.os }}</span></p>
+            <p>Python版本: <span id="python-version">{{ system_info.python_version }}</span></p>
+            <p>系统启动时间: <span id="boot-time">{{ system_info.boot_time }}</span></p>
+            <p>程序运行时间: <span id="uptime">{{ system_info.uptime }}</span></p>
+            <p>上次关闭时间: <span id="last-shutdown">{{ system_info.last_shutdown }}</span></p>
+        </div>
+
+        <div class="resource-monitor">
+            <h3>CPU使用率</h3>
+            <div class="progress">
+                <span class="progress-bar" id="cpu-bar" style="width: {{ system_info.cpu_percent }}%"></span>
+            </div>
+            <p id="cpu-text">{{ system_info.cpu_percent }}%</p>
+
+            <h3>内存使用情况</h3>
+            <div class="progress">
+                <span class="progress-bar" id="memory-bar" style="width: {{ system_info.memory_percent }}%"></span>
+            </div>
+            <p id="memory-text">已用: {{ system_info.memory_used }} / 总计: {{ system_info.memory_total }} ({{ system_info.memory_percent }}%)</p>
+
+            <h3>磁盘使用情况</h3>
+            <div class="progress">
+                <span class="progress-bar" id="disk-bar" style="width: {{ system_info.disk_percent }}%"></span>
+            </div>
+            <p id="disk-text">已用: {{ system_info.disk_used }} / 总计: {{ system_info.disk_total }} ({{ system_info.disk_percent }}%)</p>
+        </div>
+    </div>
+
+    <!-- 菜单管理部分 -->
+    <div class="menu-section">
+        <h2>菜单管理</h2>
+        <ul>
+            {% for item in menu %}
+            <li>
+                {{ item }}
+                <form action="{{ url_for('remove_menu') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="item" value="{{ item }}">
+                    <button type="submit">删除</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for('add_menu') }}" method="post">
+            <input type="text" name="item" placeholder="请输入菜单项名称" required>
+            <button type="submit">添加菜单项</button>
+        </form>
+    </div>
+
+    <!-- 插件管理部分 -->
+    <div class="plugin-section">
+        <h2>插件管理</h2>
+        <ul>
+            {% for plugin in plugins %}
+            <li>
+                <span>{{ plugin }}</span>
+                <form action="{{ url_for('toggle_plugin_route') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="plugin" value="{{ plugin }}">
+                    <button type="submit" name="action" value="enable">启用</button>
+                    <button type="submit" name="action" value="disable">停用</button>
+                </form>
+                <a href="{{ url_for('plugin_info', plugin_name=plugin) }}" class="info-link">查看详情</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 管理员操作部分 -->
+    <div class="admin-section">
+        <h2>管理员操作</h2>
+        <form action="{{ url_for('logout') }}" method="get">
+            <button type="submit">登出</button>
+        </form>
+        <form action="{{ url_for('restart') }}" method="post">
+            <button type="submit">重启</button>
+        </form>
+        <form action="{{ url_for('shutdown') }}" method="post">
+            <button type="submit">关机</button>
+        </form>
+        <form action="{{ url_for('execute_command') }}" method="post">
+            <input type="text" name="command" placeholder="输入命令" required>
+            <button type="submit">执行命令</button>
+        </form>
+    </div>
+
+    <script>
+        function updateSystemInfo() {
+            fetch('/system_info')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络请求失败');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 更新CPU信息
+                    const cpuBar = document.getElementById('cpu-bar');
+                    cpuBar.style.width = data.cpu_percent + '%';
+                    cpuBar.className = 'progress-bar ' + 
+                        (data.cpu_percent > 90 ? 'danger' : 
+                         data.cpu_percent > 70 ? 'warning' : '');
+                    document.getElementById('cpu-text').textContent = data.cpu_percent + '%';
+                    
+                    // 更新内存信息
+                    const memoryBar = document.getElementById('memory-bar');
+                    memoryBar.style.width = data.memory_percent + '%';
+                    memoryBar.className = 'progress-bar ' + 
+                        (data.memory_percent > 90 ? 'danger' : 
+                         data.memory_percent > 70 ? 'warning' : '');
+                    document.getElementById('memory-text').textContent = 
+                        `已用: ${data.memory_used} / 总计: ${data.memory_total} (${data.memory_percent}%)`;
+                    
+                    // 更新磁盘信息
+                    const diskBar = document.getElementById('disk-bar');
+                    diskBar.style.width = data.disk_percent + '%';
+                    diskBar.className = 'progress-bar ' + 
+                        (data.disk_percent > 90 ? 'danger' : 
+                         data.disk_percent > 70 ? 'warning' : '');
+                    document.getElementById('disk-text').textContent = 
+                        `已用: ${data.disk_used} / 总计: ${data.disk_total} (${data.disk_percent}%)`;
+                    
+                    // 更新运行时间
+                    document.getElementById('uptime').textContent = data.uptime;
+
+                    // 隐藏错误信息
+                    document.getElementById('error-message').style.display = 'none';
+                })
+                .catch(error => {
+                    // 显示错误信息
+                    const errorDiv = document.getElementById('error-message');
+                    errorDiv.textContent = '更新系统信息失败: ' + error.message;
+                    errorDiv.style.display = 'block';
+                });
+        }
+
+        // 每3秒更新一次系统信息
+        setInterval(updateSystemInfo, 3000);
+
+        // 页面加载完成后立即更新一次
+        document.addEventListener('DOMContentLoaded', updateSystemInfo);
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Flask==2.0.1
+requests==2.25.1
+pytest==6.2.4
+aiohttp==3.7.4
+Pillow==8.2.0
+emoji==1.6.1

@@ -1,0 +1,43 @@
+site_name: Plugin Development Documentation
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Plugin Structure: getting-started/plugin-structure.md
+  - Guides:
+      - Creating Plugins: guides/creating-plugins.md
+      - Event Handling: guides/event-handling.md
+      - Message Processing: guides/message-processing.md
+      - Best Practices: guides/best-practices.md
+  - API:
+      - Events: api/events.md
+      - Actions: api/actions.md
+      - Segments: api/segments.md
+  - Examples:
+      - Basic Plugin: examples/basic-plugin.md
+      - Command Plugin: examples/command-plugin.md
+      - Advanced Plugin: examples/advanced-plugin.md
+  - Reference:
+      - Configuration: reference/configuration.md
+      - Plugin Manifest: reference/plugin-manifest.md
+      - Testing: reference/testing.md
+
+theme:
+  name: material
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - codehilite
+  - footnotes
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+
+plugins:
+  - search

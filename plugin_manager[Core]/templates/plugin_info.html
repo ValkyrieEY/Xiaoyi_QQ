@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件信息 - {{ plugin_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">插件信息 - {{ plugin_name }}</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            {% if 'error' in info %}
+            <p class="text-red-500">错误：{{ info.error }}</p>
+            {% else %}
+            <p><strong>名称：</strong> {{ info.name }}</p>
+            <p><strong>版本：</strong> {{ info.version }}</p>
+            <p><strong>作者：</strong> {{ info.author }}</p>
+            {% endif %}
+        </div>
+        
+        <a href="{{ url_for('index') }}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">返回</a>
+    </div>
+</body>
+</html>

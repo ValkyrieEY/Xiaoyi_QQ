@@ -102,6 +102,7 @@ python main.py
 5. 提交 Pull Request
 
 感谢 [SRInternet-Studio](https://github.com/SRInternet-Studio/Jianer_QQ_bot) 提供的基础源码！
+小依Blog [小依博客](https://xun.eynet.top/) 欢迎关注我们的博客
 
 ## 📝 开源协议
 

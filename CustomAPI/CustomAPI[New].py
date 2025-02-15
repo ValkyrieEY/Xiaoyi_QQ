@@ -85,14 +85,65 @@ def start_webui():
     except Exception as e:
         print(f"启动 WebUI 失败: {str(e)}")
 
+# 添加文件路径常量
+MANAGE_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Manage_User.ini")
+SUPER_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Super_User.ini")
+
+def read_user_groups():
+    """读取管理员和超级用户组"""
+    manage_users = []
+    super_users = []
+    
+    # 读取 Manage_User.ini
+    if os.path.exists(MANAGE_USER_INI):
+        with open(MANAGE_USER_INI, 'r', encoding='utf-8') as f:
+            manage_users = [line.strip() for line in f if line.strip()]
+    
+    # 读取 Super_User.ini
+    if os.path.exists(SUPER_USER_INI):
+        with open(SUPER_USER_INI, 'r', encoding='utf-8') as f:
+            super_users = [line.strip() for line in f if line.strip()]
+    
+    return manage_users, super_users
+
+# 修改 is_admin 函数
+async def is_admin(user_id: int, group_id: int, actions) -> bool:
+    # 检查群管理员权限
+    group_member_info = await actions.get_group_member_info(group_id=group_id, user_id=user_id)
+    is_group_admin = group_member_info.data.raw['role'] in ['owner', 'admin']
+    
+    try:
+        # 从 ini 文件读取用户组
+        manage_users, super_users = read_user_groups()
+        
+        # 检查用户是否在任一用户组中
+        is_privileged_user = (str(user_id) in manage_users) or (str(user_id) in super_users)
+        
+        return is_group_admin or is_privileged_user
+    except Exception as e:
+        print(f"读取用户组配置失败: {str(e)}")
+        return is_group_admin
+
+# 修改 on_message 函数中的相关部分
 async def on_message(event, actions, Manager, Segments):
     user_message = str(event.message)
     
     # 检查是否是管理命令
     if user_message == "/api config":
+        # 添加权限检查
+        if not await is_admin(event.user_id, event.group_id, actions):
+            await actions.send(
+                group_id=event.group_id, 
+                message=Manager.Message(Segments.Text("您没有权限使用此命令，仅管理员可用。"))
+            )
+            return True
+            
         threading.Thread(target=start_webui, daemon=True).start()
         webbrowser.open('http://localhost:4997')
-        await actions.send(group_id=event.group_id, message=Manager.Message(Segments.Text("已打开API配置界面，请在浏览器中操作")))
+        await actions.send(
+            group_id=event.group_id, 
+            message=Manager.Message(Segments.Text("已打开API配置界面，请在浏览器中操作"))
+        )
         return True
     
     # 处理API请求

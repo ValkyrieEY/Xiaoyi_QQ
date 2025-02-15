@@ -24,6 +24,27 @@ __author__ = "Xiaoyi"
 ANTISPAM_CONFIG = os.path.join(os.path.dirname(__file__), "antispam_config.json")
 ADMIN_FILE = os.path.join(os.path.dirname(__file__), "xiaoyi_admins.json")
 
+# 添加文件路径常量
+MANAGE_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Manage_User.ini")
+SUPER_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Super_User.ini")
+
+def read_user_groups():
+    """读取管理员和超级用户组"""
+    manage_users = []
+    super_users = []
+    
+    # 读取 Manage_User.ini
+    if os.path.exists(MANAGE_USER_INI):
+        with open(MANAGE_USER_INI, 'r', encoding='utf-8') as f:
+            manage_users = [line.strip() for line in f if line.strip()]
+    
+    # 读取 Super_User.ini
+    if os.path.exists(SUPER_USER_INI):
+        with open(SUPER_USER_INI, 'r', encoding='utf-8') as f:
+            super_users = [line.strip() for line in f if line.strip()]
+    
+    return manage_users, super_users
+
 class AntiSpamSystem:
     def __init__(self):
         # 确保配置目录存在
@@ -86,7 +107,25 @@ class AntiSpamSystem:
 
     def is_admin(self, user_id: str) -> bool:
         """检查是否是管理员"""
-        return user_id in self.admins["admins"]
+        # 检查内部管理员列表
+        if user_id in self.admins["admins"]:
+            return True
+        
+        try:
+            # 读取外部用户组配置
+            manage_users, super_users = read_user_groups()
+            
+            # 检查用户是否在任一用户组中
+            if user_id in manage_users or user_id in super_users:
+                return True
+        except Exception as e:
+            print(f"[AntiSpamPlugin] 读取用户组配置失败: {str(e)}")
+        
+        return False
+
+    def is_public_command(self, cmd: str) -> bool:
+        """检查是否是公开命令"""
+        return cmd in ["status", "help"]
 
     def check_spam(self, user_id: str) -> tuple[bool, int]:
         """检查用户是否刷屏"""
@@ -124,15 +163,19 @@ async def on_message(event, actions, Manager, Segments):
     
     # 处理命令
     if message.startswith(spam_system.command_prefix):
-        if not spam_system.is_admin(user_id):
-            await actions.send(group_id=event.group_id, message=Manager.Message(Segments.Text("你没有权限执行此操作")))
-            return True
-
         cmd_parts = message[len(spam_system.command_prefix):].strip().split()
         if not cmd_parts:
             return False
 
         cmd = cmd_parts[0]
+        
+        # 检查是否是公开命令
+        if not spam_system.is_public_command(cmd) and not spam_system.is_admin(user_id):
+            await actions.send(
+                group_id=event.group_id, 
+                message=Manager.Message(Segments.Text("你没有权限执行此操作"))
+            )
+            return True
 
         if cmd == "status":
             response = "刷屏检测系统状态：\n"

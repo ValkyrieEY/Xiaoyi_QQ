@@ -30,6 +30,7 @@
 - pip 包管理器
 
 ### 快速开始
+#### 拥有Git
 
 1. 克隆仓库
 ```bash
@@ -62,6 +63,10 @@ notepad config.yaml
 ```bash
 python main.py
 ```
+
+没有Git[从零安装]
+1. 下载本仓库全部代码
+2. 解压至安装路径
 
 ## 🔨 功能列表
 
@@ -102,7 +107,7 @@ python main.py
 5. 提交 Pull Request
 
 感谢 [SRInternet-Studio](https://github.com/SRInternet-Studio/Jianer_QQ_bot) 提供的基础源码！
-小依Blog [小依博客](https://xun.eynet.top/) 欢迎关注我们的博客
+小依Blog [点击前往](https://xun.eynet.top/) 欢迎关注我们的博客
 
 ## 📝 开源协议
 

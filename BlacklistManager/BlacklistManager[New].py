@@ -25,6 +25,10 @@ __author__ = "Xiaoyi"
 BLACKLIST_FILE = os.path.join(os.path.dirname(__file__), "blacklist_data.json")
 ADMIN_FILE = os.path.join(os.path.dirname(__file__), "xiaoyi_admins.json")
 
+# 添加文件路径常量
+MANAGE_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Manage_User.ini")
+SUPER_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Super_User.ini")
+
 class BlacklistSystem:
     def __init__(self):
         # 确保配置目录存在
@@ -94,7 +98,21 @@ class BlacklistSystem:
         return False
 
     def is_admin(self, user_id: str) -> bool:
-        return user_id in self.admins["admins"]
+        # 首先检查内部管理员列表
+        if user_id in self.admins["admins"]:
+            return True
+            
+        try:
+            # 读取外部用户组配置
+            manage_users, super_users = read_user_groups()
+            
+            # 检查用户是否在任一用户组中
+            if user_id in manage_users or user_id in super_users:
+                return True
+        except Exception as e:
+            print(f"[BlacklistManager] 读取用户组配置失败: {str(e)}")
+        
+        return False
 
     def add_to_blacklist(self, user_id: str, reason: str, operator_id: str) -> bool:
         self.blacklist[user_id] = {
@@ -119,6 +137,23 @@ class BlacklistSystem:
     def toggle_system(self, enabled: bool) -> bool:
         self.admins["enabled"] = enabled
         return self.save_data(ADMIN_FILE, self.admins)
+
+def read_user_groups():
+    """读取管理员和超级用户组"""
+    manage_users = []
+    super_users = []
+    
+    # 读取 Manage_User.ini
+    if os.path.exists(MANAGE_USER_INI):
+        with open(MANAGE_USER_INI, 'r', encoding='utf-8') as f:
+            manage_users = [line.strip() for line in f if line.strip()]
+    
+    # 读取 Super_User.ini
+    if os.path.exists(SUPER_USER_INI):
+        with open(SUPER_USER_INI, 'r', encoding='utf-8') as f:
+            super_users = [line.strip() for line in f if line.strip()]
+    
+    return manage_users, super_users
 
 blacklist_system = BlacklistSystem()
 

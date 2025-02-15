@@ -30,6 +30,7 @@ DEFAULT_CONFIG = {
         "url": "https://api.example.com/weather",
         "response_type": "text",
         "response_path": "weather.text",  # 指定要提取的JSON路径
+        "custom_response": "天气：【json#weather.text】\n温度：【json#weather.temp】℃\n查询时间：【当前时间】",
         "params": [{
             "name": "city",         # API参数名
             "type": "user_input",   # 参数类型：user_input(用户输入), text(固定文本), sender_id(发送者ID)
@@ -165,19 +166,8 @@ async def on_message(event, actions, Manager, Segments):
                 
                 # 发送请求
                 response = requests.get(api['url'], params=params)
-                
-                # 如果指定了响应路径，则提取指定字段
-                if api.get('response_path'):
-                    try:
-                        result = response.json()
-                        for key in api['response_path'].split('.'):
-                            result = result.get(key, {})
-                        response_text = str(result)
-                    except:
-                        response_text = response.text
-                else:
-                    response_text = response.text
-                
+                response_text = await process_response(api, response, event, user_input)
+
                 if api['response_type'] == 'image':
                     await actions.send(group_id=event.group_id, message=Manager.Message(Segments.Image(response_text)))
                 else:
@@ -188,3 +178,53 @@ async def on_message(event, actions, Manager, Segments):
                 return True
     
     return False
+
+async def process_response(api, response, event, user_input):
+    """处理API响应并返回格式化的消息"""
+    from datetime import datetime
+    
+    try:
+        # 获取JSON响应
+        json_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else {}
+        
+        # 如果有自定义回复格式
+        if api.get('custom_response'):
+            message = api['custom_response']
+            
+            # 替换JSON变量
+            import re
+            json_vars = re.findall(r'【json#([\w\.]+)】', message)
+            for var in json_vars:
+                try:
+                    value = json_data
+                    for key in var.split('.'):
+                        value = value.get(key, {})
+                    message = message.replace(f'【json#{var}】', str(value))
+                except:
+                    message = message.replace(f'【json#{var}】', '未知')
+            
+            # 替换其他变量
+            replacements = {
+                '【用户消息】': user_input,
+                '【发送者QQ】': str(event.user_id),
+                '【发送者昵称】': event.sender.nickname if hasattr(event, 'sender') else str(event.user_id),
+                '【当前时间】': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                '【换行】': '\n',
+                '【图片链接】': response.text if api['response_type'] == 'image' else '',
+                '【at】': f'[CQ:at,qq={event.user_id}]'
+            }
+            
+            # 替换参数变量
+            for param in api.get('params', []):
+                param_name = param['name']
+                param_value = param.get('value', '') if param['type'] == 'text' else user_input
+                replacements[f'【参数#{param_name}】'] = param_value
+            
+            # 执行所有替换
+            for key, value in replacements.items():
+                message = message.replace(key, str(value))
+            
+            return message
+    except Exception as e:
+        print(f"处理响应时出错: {str(e)}")
+        return response.text

@@ -13,15 +13,17 @@ from Hyper import Configurator, Manager, Segments
 # 插件元数据
 TRIGGHT_KEYWORD = "plugin"  # 插件管理相关命令触发
 HELP_MESSAGE = """插件管理器
-指令：
-plugin ui - 启动插件管理器WebUI
+普通用户指令：
 plugin list - 列出所有插件
 plugin info <插件名> - 查看插件信息
-plugin enable <插件名> - 启用插件
-plugin disable <插件名> - 停用插件
-plugin menu add <项目> - 添加菜单项
-plugin menu remove <项目> - 删除菜单项
-plugin menu show - 显示菜单"""
+
+管理员指令：
+plugin ui - 启动插件管理器WebUI（需要管理员权限）
+plugin enable <插件名> - 启用插件（需要管理员权限）
+plugin disable <插件名> - 停用插件（需要管理员权限）
+plugin menu add <项目> - 添加菜单项（需要管理员权限）
+plugin menu remove <项目> - 删除菜单项（需要管理员权限）
+plugin menu show - 显示菜单（需要管理员权限）"""
 
 __name__ = "PluginManager"
 __version__ = "1.1.0"
@@ -33,6 +35,10 @@ START_TIME = time.time()
 LAST_SHUTDOWN_FILE = "last_shutdown.txt"
 LOG_FILE = "bot.log"
 HISTORY_FILE = "message_history.json"
+
+# 在文件开头添加路径常量
+MANAGE_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Manage_User.ini")
+SUPER_USER_INI = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Super_User.ini")
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # 用于加密会话数据
@@ -271,8 +277,35 @@ def log_message(message):
         json.dump(message, f)
         f.write('\n')
 
+def read_user_groups():
+    """读取管理员和超级用户组"""
+    manage_users = []
+    super_users = []
+    
+    # 读取 Manage_User.ini
+    if os.path.exists(MANAGE_USER_INI):
+        with open(MANAGE_USER_INI, 'r', encoding='utf-8') as f:
+            manage_users = [line.strip() for line in f if line.strip()]
+    
+    # 读取 Super_User.ini
+    if os.path.exists(SUPER_USER_INI):
+        with open(SUPER_USER_INI, 'r', encoding='utf-8') as f:
+            super_users = [line.strip() for line in f if line.strip()]
+    
+    return manage_users, super_users
+
+def is_admin(user_id: str) -> bool:
+    """检查用户是否有管理员权限"""
+    try:
+        manage_users, super_users = read_user_groups()
+        return user_id in manage_users or user_id in super_users
+    except Exception as e:
+        print(f"[PluginManager] 读取用户组配置失败: {str(e)}")
+        return False
+
 # 在消息处理函数中记录消息
 async def on_message(event, actions, Manager, Segments):
+    user_id = str(event.user_id)
     message = str(event.message).strip()
     
     # 记录消息
@@ -286,8 +319,46 @@ async def on_message(event, actions, Manager, Segments):
     if not message.startswith("plugin"):
         return False
     
-    cmd = message[6:].strip()  # 移除 "plugin " 前缀
+    cmd = message[6:].strip()
+
+    # 普通用户命令
+    if cmd == "list":
+        plugins = [f.replace('.py', '') for f in os.listdir(PLUGIN_FOLDER) if f.endswith('.py')]
+        await actions.send(
+            group_id=event.group_id,
+            message=Manager.Message(Segments.Text("已安装的插件：\n" + "\n".join(plugins)))
+        )
+        return True
     
+    elif cmd.startswith("info "):
+        plugin_name = cmd[5:].strip()
+        info = get_plugin_info(plugin_name)
+        if "error" in info:
+            await actions.send(
+                group_id=event.group_id,
+                message=Manager.Message(Segments.Text(f"获取插件 '{plugin_name}' 信息失败：{info['error']}"))
+            )
+        else:
+            await actions.send(
+                group_id=event.group_id,
+                message=Manager.Message(Segments.Text(
+                    f"插件 '{plugin_name}' 信息：\n"
+                    f"名称：{info['name']}\n"
+                    f"版本：{info['version']}\n"
+                    f"作者：{info['author']}"
+                ))
+            )
+        return True
+
+    # 管理员命令需要权限检查
+    if not is_admin(user_id):
+        await actions.send(
+            group_id=event.group_id,
+            message=Manager.Message(Segments.Text("你没有权限执行此操作，此命令仅管理员可用。"))
+        )
+        return True
+
+    # 以下是需要管理员权限的命令
     if cmd == "ui":
         threading.Thread(target=start_webui, daemon=True).start()
         await actions.send(

@@ -53,6 +53,29 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        .custom-response {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: vertical;
+        }
+        .variable-help {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        .variable-help ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        .variable-help li {
+            margin: 3px 0;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +128,27 @@
                         <input type="text" value="${api.response_path || ''}" 
                                onchange="updateAPI(${index}, 'response_path', this.value)"
                                placeholder="例如：data.weather.text">
+                    </div>
+                    <div class="input-group">
+                        <label>自定义回复：</label>
+                        <textarea class="custom-response" 
+                                  onchange="updateAPI(${index}, 'custom_response', this.value)" 
+                                  placeholder="例如：天气预报：【json#weather.text】&#10;温度：【json#weather.temp】℃&#10;发送者：@【发送者QQ】&#10;原始消息：【用户消息】"
+                                  rows="4">${api.custom_response || ''}</textarea>
+                    </div>
+                    <div class="variable-help">
+                        <p><strong>可用变量说明：</strong></p>
+                        <ul>
+                            <li>【json#路径】- 获取JSON响应中的指定字段，例如：【json#data.weather】</li>
+                            <li>【用户消息】- 用户发送的原始消息（去除指令部分）</li>
+                            <li>【发送者QQ】- 发送消息的用户QQ号</li>
+                            <li>【发送者昵称】- 发送消息的用户昵称</li>
+                            <li>【当前时间】- 当前时间，格式：YYYY-MM-DD HH:mm:ss</li>
+                            <li>【换行】- 插入换行符</li>
+                            <li>【图片链接】- API返回的图片URL</li>
+                            <li>【at】- @发送者</li>
+                            <li>【参数#名称】- 获取指定参数的值</li>
+                        </ul>
                     </div>
                     <div class="params-section">
                         <h4>参数配置</h4>

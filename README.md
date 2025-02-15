@@ -30,7 +30,21 @@
 - pip 包管理器
 
 ### 快速开始
-#### 拥有Git
+#### 直接安装[推荐]
+
+1. 下载本仓完整文件
+2. 运行Python3.13安装文件
+3. 通过文件夹打开cmd并运行
+```
+pip install -r requirements.txt
+```
+4. 运行SetupWizard.pyw并配置
+5. 运行Lagrange.One并登录你的QQ
+6. 在UI内点击启动机器人
+7. 如果你需要拓展功能可以前往插件分支查看
+[插件分支点击前往](https://github.com/ValkyrieEY/Xiaoyi_QQ/tree/Extension-plug-in)
+
+#### 通过Git安装
 
 1. 克隆仓库
 ```bash
@@ -64,9 +78,6 @@ notepad config.yaml
 python main.py
 ```
 
-没有Git[从零安装]
-1. 下载本仓库全部代码
-2. 解压至安装路径
 
 ## 🔨 功能列表
 
@@ -107,7 +118,8 @@ python main.py
 5. 提交 Pull Request
 
 感谢 [SRInternet-Studio](https://github.com/SRInternet-Studio/Jianer_QQ_bot) 提供的基础源码！
-小依Blog [点击前往](https://xun.eynet.top/) 欢迎关注我们的博客
+
+欢迎前往 [依の技术栈](https://xun.eynet.top/) 关注我们的博客！
 
 ## 📝 开源协议
 

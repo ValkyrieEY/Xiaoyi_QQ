@@ -78,6 +78,17 @@ notepad config.yaml
 python main.py
 ```
 
+### API申请地址
+#### Google Gemini
+```bash
+前往：https://ai.google.dev/
+可能需要用到加速器才能连接！！！
+```
+#### FreeGPT(免费3.5/4)
+```bash
+前往：https://free.v36.cm/
+无需加速器直连
+```
 
 ## 🔨 功能列表
 

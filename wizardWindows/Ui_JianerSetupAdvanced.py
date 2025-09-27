@@ -127,7 +127,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "简儿 - 设置框架"))
+        Form.setWindowTitle(_translate("Form", "小依 - 设置框架"))
         self.LargeTitleLabel.setText(_translate("Form", "框架设置"))
         self.SubtitleLabel_5.setText(_translate("Form", "    一些关于框架的配置。"))
         self.TitleLabel_3.setText(_translate("Form", "签名服务器代理"))

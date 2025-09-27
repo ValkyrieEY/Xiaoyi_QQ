@@ -390,7 +390,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "简儿 - 设置基本信息"))
+        Form.setWindowTitle(_translate("Form", "小依 - 设置基本信息"))
         self.LargeTitleLabel.setText(_translate("Form", "基本信息设置"))
         self.SubtitleLabel_5.setText(_translate("Form", "    设置 QQ机器人 的基本信息，如 QQ号、QQ机器人昵称和触发回答的关键词等。"))
         self.TitleLabel_6.setText(_translate("Form", "触发关键词 - 必填"))

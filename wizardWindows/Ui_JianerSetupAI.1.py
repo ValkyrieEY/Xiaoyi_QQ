@@ -159,7 +159,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "简儿 - 设置AI功能"))
+        Form.setWindowTitle(_translate("Form", "小依 - 设置AI功能"))
         self.LargeTitleLabel.setText(_translate("Form", "Artificial Intelligence 设置"))
         self.SubtitleLabel_5.setText(_translate("Form", "    配置 简儿 的 AI功能。"))
         self.TitleLabel_7.setText(_translate("Form", "Gemini Key"))

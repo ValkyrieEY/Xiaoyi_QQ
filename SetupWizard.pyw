@@ -158,7 +158,7 @@ class SetupWizard(SplitFluentWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("小依 OneBot")
-        self.setWindowIcon(QIcon(os.path.abspath('.//wizardWindows/Icon_rounded.png')))
+        self.setWindowIcon(QIcon(os.path.abspath('.//wizardWindows/icon.png')))
         self.resize(1000, 700)
         
         # 1. 创建启动页面
@@ -195,19 +195,13 @@ class SetupWizard(SplitFluentWindow):
         self.jianer_setup_workflow = JianerSetupWorkflow(self)
         self.jianer_setup_workflow.setObjectName("JianerSetupWorkflow")
         
-        # 自适应关于页面的图标颜色
+        # 自适应关于页面的图标颜色 - 已禁用，因为关于页面改为版本介绍卡片
         if isDarkTheme():
             self.jianer_setup_wizard.line.setStyleSheet("color: rgb(255, 255, 255);")
-            self.jianer_setup_about.IconWidget_2.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsBilibili_dark.png')))
-            self.jianer_setup_about.IconWidget_4.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsGithub_dark.png')))
-            self.jianer_setup_about.IconWidget.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsQq_dark.png')))
-            self.jianer_setup_about.IconWidget_3.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsGithub_dark.png')))
+            # 原图标设置代码已删除，因为关于页面不再使用按钮
         else:
             self.jianer_setup_wizard.line.setStyleSheet("color: rgb(0.0.0.0);")
-            self.jianer_setup_about.IconWidget_2.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsBilibili.png')))
-            self.jianer_setup_about.IconWidget_4.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsGithub.png')))
-            self.jianer_setup_about.IconWidget.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsQq.png')))
-            self.jianer_setup_about.IconWidget_3.setIcon(QIcon(os.path.abspath('.//wizardWindows/SimpleIconsGithub.png')))
+            # 原图标设置代码已删除，因为关于页面不再使用按钮
         
         # 定义 jianer_setup_pre 中所有按钮的点击事件
         self.jianer_setup_pre.PrimaryPushButton_2.clicked.connect(lambda: self.new_preset(None, "标题", "介绍", "", True))
@@ -239,12 +233,8 @@ class SetupWizard(SplitFluentWindow):
         # 添加工作流按钮
         self.add_workflow_button()
         
-        # 定义 jianer_setup_about 中所有按钮的点击事件
-        self.jianer_setup_about.NormalIconButton.clicked.connect(lambda: webbrowser.open("https://qm.qq.com/q/fsVJtsZcA2"))
-        self.jianer_setup_about.NormalIconButton_2.clicked.connect(lambda: webbrowser.open("https://space.bilibili.com/1969160969"))
-        self.jianer_setup_about.NormalIconButton_3.clicked.connect(lambda: webbrowser.open("https://github.com/SRInternet-Studio/Jianer_QQ_bot/"))
-        self.jianer_setup_about.NormalIconButton_4.clicked.connect(lambda: webbrowser.open("https://github.com/SRInternet-Studio/Jianer_QQ_bot/issues/new?"))
-        self.jianer_setup_about.NormalIconButton_5.clicked.connect(lambda: webbrowser.open("https://www.sr-studio.cn/"))
+        # 定义 jianer_setup_about 中所有按钮的点击事件 - 已禁用，因为关于页面改为版本介绍卡片
+        # 原按钮点击事件已删除，因为关于页面不再使用可点击按钮
         
         # 定义 jianer_setup_plugins 中的按钮
         self.jianer_setup_plugins.SearchButton.setIcon(FluentIcon.SEARCH)
@@ -287,7 +277,7 @@ class SetupWizard(SplitFluentWindow):
         self.jianer_setup_lgr.SplitPushButton.setCurrentIndex(0)
 
         # 添加子界面
-        self.addSubInterface(self.jianer_setup_wizard, QIcon(os.path.abspath('.//wizardWindows/Icon_rounded.png')), "欢迎")
+        self.addSubInterface(self.jianer_setup_wizard, QIcon(os.path.abspath('.//wizardWindows/icon.png')), "欢迎")
         self.addSubInterface(self.jianer_setup_basic, FluentIcon.COPY, "基本信息设置")
         self.addSubInterface(self.jianer_setup_ai, FluentIcon.TRANSPARENT, "AI 设置")
         self.addSubInterface(self.jianer_setup_pre, FluentIcon.PENCIL_INK, "AI 预设")
@@ -1056,7 +1046,7 @@ class SetupWizard(SplitFluentWindow):
             main_layout.addWidget(self.jianer_setup_apply.splitter)
             
             # 添加初始日志
-            self.append_log_output(f"[简儿配置助手] 日志系统初始化完成 - {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            self.append_log_output(f"[小依配置助手] 日志系统初始化完成 - {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             
         except Exception as e:
             print(f"初始化控制台日志失败: {e}")
@@ -2023,9 +2013,8 @@ class IntelliMarkets():
 # '''
         
 if __name__ == '__main__':
+    # 设置高DPI缩放策略（PySide6中不再需要手动设置AA_EnableHighDpiScaling和AA_UseHighDpiPixmaps）
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
     
     # 设置跟随系统主题和主题色
     setTheme(Theme.AUTO)

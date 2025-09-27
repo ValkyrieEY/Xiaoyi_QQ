@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>简儿 - 关于</string>
+   <string>小依 - 关于</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -105,7 +105,7 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">image: url(:/png/Icon_rounded.png);</string>
+            <string notr="true">image: url(:/png/icon.png);</string>
            </property>
            <property name="text">
             <string/>
@@ -124,7 +124,7 @@
               </font>
              </property>
              <property name="text">
-              <string>简儿 - 简单 可爱 个性 全知</string>
+              <string>小依 - 简单 可爱 个性 全知</string>
              </property>
             </widget>
            </item>
@@ -216,7 +216,7 @@
               </spacer>
              </item>
              <item row="1" column="0">
-              <widget class="ElevatedCardWidget" name="NormalIconButton_2">
+              <widget class="ElevatedCardWidget" name="VersionCard_2">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -234,42 +234,7 @@
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>10</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="IconWidget" name="IconWidget_2">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_6">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>10</width>
+                    <width>20</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -309,7 +274,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>哔哩哔哩 Bilibili</string>
+                     <string>主要功能</string>
                     </property>
                    </widget>
                   </item>
@@ -323,7 +288,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>这里有我们的最新动态。</string>
+                     <string>AI智能对话、自动群管理、娱乐互动、有趣的插件系统和自定义工作流</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::AutoText</enum>
@@ -354,11 +319,27 @@
                   </item>
                  </layout>
                 </item>
+                <item>
+                 <spacer name="horizontalSpacer_6">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </widget>
              </item>
              <item row="3" column="0">
-              <widget class="ElevatedCardWidget" name="NormalIconButton_4">
+              <widget class="ElevatedCardWidget" name="VersionCard_4">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -376,42 +357,7 @@
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>10</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="IconWidget" name="IconWidget_4">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_10">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>10</width>
+                    <width>20</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -451,7 +397,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>Github 反馈页面</string>
+                     <string>更新内容</string>
                     </property>
                    </widget>
                   </item>
@@ -465,7 +411,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>遇到了bug (＃°Д°) ？！快点击这里告诉我们的开发者</string>
+                     <string>新增AI多模型支持、优化群管机制、提升系统稳定性和丰富的自定义选项</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::AutoText</enum>
@@ -496,11 +442,27 @@
                   </item>
                  </layout>
                 </item>
+                <item>
+                 <spacer name="horizontalSpacer_10">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </widget>
              </item>
              <item row="0" column="0">
-              <widget class="ElevatedCardWidget" name="NormalIconButton">
+              <widget class="ElevatedCardWidget" name="VersionCard_1">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -518,42 +480,7 @@
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>10</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="IconWidget" name="IconWidget">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>10</width>
+                    <width>20</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -593,7 +520,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>体验原生简儿</string>
+                     <string>小依 Version 3.0.0</string>
                     </property>
                    </widget>
                   </item>
@@ -607,7 +534,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>点此加入我们的官方QQ群 983497968 体验原生简儿。</string>
+                     <string>基于OneBot v11协议的智能QQ群机器人，集成AI对话、群管功能和娱乐插件</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::AutoText</enum>
@@ -638,11 +565,27 @@
                   </item>
                  </layout>
                 </item>
+                <item>
+                 <spacer name="horizontalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </widget>
              </item>
              <item row="2" column="0">
-              <widget class="ElevatedCardWidget" name="NormalIconButton_3">
+              <widget class="ElevatedCardWidget" name="VersionCard_3">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -660,42 +603,7 @@
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>10</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="IconWidget" name="IconWidget_3">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_8">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>10</width>
+                    <width>20</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -735,7 +643,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>Github 开源页面</string>
+                     <string>技术架构</string>
                     </property>
                    </widget>
                   </item>
@@ -749,7 +657,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>简儿 2.0.0.0 是开源项目，她被协议 GPLv3 所保护。</string>
+                     <string>基于Python开发，支持多种AI模型，提供丰富的插件接口和灵活的配置选项</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::AutoText</enum>
@@ -780,11 +688,27 @@
                   </item>
                  </layout>
                 </item>
+                <item>
+                 <spacer name="horizontalSpacer_8">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </widget>
              </item>
              <item row="4" column="0">
-              <widget class="ElevatedCardWidget" name="NormalIconButton_5">
+              <widget class="ElevatedCardWidget" name="VersionCard_5">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -802,42 +726,7 @@
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
-                    <width>10</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="IconWidget" name="IconWidget_5">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_12">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeType">
-                   <enum>QSizePolicy::Fixed</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>10</width>
+                    <width>20</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -877,7 +766,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>版权所有 © 2025 思锐工作室</string>
+                     <string>版权声明</string>
                     </property>
                    </widget>
                   </item>
@@ -891,7 +780,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>请在QQ群中输入输入 /关于 来查看更详细的关于信息。</string>
+                     <string>版权所有 © 2025 思锐工作室，遵循GPLv3开源协议。欢迎访问GitHub了解更多详情</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::AutoText</enum>
@@ -921,6 +810,22 @@
                    </spacer>
                   </item>
                  </layout>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_12">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                </layout>
               </widget>

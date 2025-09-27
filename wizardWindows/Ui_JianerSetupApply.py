@@ -86,7 +86,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "简儿 - 核对设置清单"))
+        Form.setWindowTitle(_translate("Form", "小依 - 核对设置清单"))
         self.LargeTitleLabel.setText(_translate("Form", "核对设置清单并生成设置"))
         self.SubtitleLabel_5.setText(_translate("Form", "    根据您的设置，当前已生成如下设置内容："))
         self.PrimaryPushButton.setText(_translate("Form", "应用"))

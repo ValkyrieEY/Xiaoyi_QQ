@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>简儿 - 核对设置清单</string>
+   <string>小依 - 核对设置清单</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>简儿 - 设置向导</string>
+   <string>小依 - 设置向导</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -524,7 +524,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>配置 简儿 的 AI功能。</string>
+                     <string>配置 小依 的 AI功能。</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::AutoText</enum>

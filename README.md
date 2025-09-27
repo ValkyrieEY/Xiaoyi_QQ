@@ -71,14 +71,6 @@ python test_ai_memory.py
 python test_workflow.py
 ```
 
-### 获取帮助
-
-- 📖 查看 [使用文档](./docs/)
-- 🐛 提交 [Issue](https://github.com/YourRepo/issues)
-- 💬 加入 [QQ交流群]()
-- 📧 邮件联系: 2477194503@qq.com
-
-
 ## 🤝 贡献指南
 
 我们欢迎任何形式的贡献！无论是新功能、Bug修复、文档改进还是插件开发。

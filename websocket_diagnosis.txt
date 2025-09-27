@@ -1,0 +1,19 @@
+# 简儿QQ机器人环境诊断报告
+
+## 系统信息
+- Python版本: 3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]
+- 工作目录: D:\zhuomian\Jianer_QQ_bot-NEXT-PREVIEW
+- 脚本路径: D:\zhuomian\Jianer_QQ_bot-NEXT-PREVIEW\fix_websocket_issue.py
+
+## 已安装的WebSocket相关包
+- bottle==0.13.2
+- gevent==24.11.1
+- trio-websocket==0.11.1
+- websocket==0.2.1
+- websocket-client==1.8.0
+- websockets==10.4
+
+## 配置文件状态
+- config.json: 存在
+- prerequisites/current.json: 存在
+- appsettings.json: 存在

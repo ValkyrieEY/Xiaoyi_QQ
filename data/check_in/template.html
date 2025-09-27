@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .user-info {
+            flex-grow: 1;
+        }
+        .nickname {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .rank {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        .rewards {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .reward-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .hitokoto {
+            font-style: italic;
+            margin-top: 20px;
+            padding: 10px;
+            border-left: 3px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <img class="avatar" src="{{ avatar_url }}" alt="Avatar">
+            <div class="user-info">
+                <div class="nickname">{{ nickname }}</div>
+                <div class="rank">第 {{ rank }} 名签到</div>
+            </div>
+        </div>
+        <div class="rewards">
+            <div class="reward-item">
+                <span>今日好感度</span>
+                <span>+{{ favor }}</span>
+            </div>
+            <div class="reward-item">
+                <span>今日积分</span>
+                <span>{{ points }}</span>
+            </div>
+            <div class="reward-item">
+                <span>累计好感度</span>
+                <span>{{ total_favor }}</span>
+            </div>
+            <div class="reward-item">
+                <span>累计积分</span>
+                <span>{{ total_points }}</span>
+            </div>
+            <div class="reward-item">
+                <span>累计签到</span>
+                <span>{{ total_days }}天</span>
+            </div>
+        </div>
+        <div class="hitokoto">
+            {{ hitokoto }}
+        </div>
+    </div>
+</body>
+</html>

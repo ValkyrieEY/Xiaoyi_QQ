@@ -1,0 +1,43 @@
+{
+  "id": "wf_example_welcome",
+  "name": "自动欢迎新成员",
+  "description": "当有新成员加入群聊时，自动发送欢迎消息",
+  "enabled": true,
+  "created_at": "2025-01-16T10:00:00",
+  "updated_at": "2025-01-16T10:00:00",
+  "routes": [
+    {
+      "id": "route_new_member",
+      "name": "新成员加入检测",
+      "rule_type": "keyword",
+      "condition": "欢迎",
+      "priority": 100,
+      "enabled": true,
+      "description": "检测新成员加入事件"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_welcome_message",
+      "name": "发送欢迎消息",
+      "type": "message",
+      "enabled": true,
+      "description": "向新成员发送欢迎消息",
+      "config": {
+        "message": "欢迎 ${user_name} 加入我们的大家庭！请仔细阅读群规，有问题可以咨询管理员。",
+        "reply": false
+      }
+    },
+    {
+      "id": "step_set_welcome_flag",
+      "name": "设置欢迎标记",
+      "type": "variable",
+      "enabled": true,
+      "description": "标记已发送欢迎消息",
+      "config": {
+        "variable_name": "welcome_sent",
+        "variable_value": "true"
+      }
+    }
+  ]
+}

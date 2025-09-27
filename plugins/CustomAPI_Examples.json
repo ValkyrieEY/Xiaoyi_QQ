@@ -1,0 +1,140 @@
+{
+  "apis": [
+    {
+      "name": "一言API",
+      "enabled": true,
+      "use_prefix": true,
+      "read_after_command": false,
+      "trigger": "一言",
+      "url": "https://v1.hitokoto.cn/",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Jianer-CustomAPI/1.0"
+      },
+      "body_template": {
+        "c": "a"
+      },
+      "response_template": "📝 【json文本#hitokoto】\n\n——《【json文本#from】》\n\n💭 来自【发送者昵称】的请求\n⏰ 【当前时间】",
+      "cooldown": 5,
+      "timeout": 30,
+      "max_retries": 3,
+      "retry_delay": 1,
+      "error_message": "一言API调用失败，请稍后重试",
+      "success_codes": [200, 201, 202],
+      "encode_json": true,
+      "follow_redirects": true,
+      "verify_ssl": true
+    },
+    {
+      "name": "随机图片",
+      "enabled": true,
+      "use_prefix": true,
+      "read_after_command": false,
+      "trigger": "随机图片",
+      "url": "https://api.lolimi.cn/API/dmtx/api.php",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Jianer-CustomAPI/1.0"
+      },
+      "body_template": {},
+      "response_template": "🖼️ 为【发送者昵称】献上随机图片：\n【纯图片】\n\n⏰ 生成时间：【当前时间】",
+      "cooldown": 10,
+      "timeout": 30,
+      "max_retries": 3,
+      "retry_delay": 1,
+      "error_message": "图片API调用失败，请稍后重试",
+      "success_codes": [200, 201, 202],
+      "encode_json": true,
+      "follow_redirects": true,
+      "verify_ssl": true
+    },
+    {
+      "name": "系统状态",
+      "enabled": true,
+      "use_prefix": true,
+      "read_after_command": false,
+      "trigger": "系统状态",
+      "url": "https://httpbin.org/post",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Jianer-CustomAPI/1.0"
+      },
+      "body_template": {
+        "user": "【发送者昵称】",
+        "user_id": "【发送者QQ】",
+        "group": "【群名称】",
+        "system": {
+          "cpu": "【CPU使用率】",
+          "memory": "【内存使用率】",
+          "disk": "【磁盘使用率】",
+          "time": "【当前时间】"
+        }
+      },
+      "response_template": "🖥️ 系统状态报告（请求者：【发送者昵称】）\n\n💻 CPU使用率：【CPU使用率】\n🧠 内存使用率：【内存使用率】\n💾 磁盘使用率：【磁盘使用率】\n\n📊 详细信息：\n- 可用内存：【可用内存】 / 【总内存】\n- 可用磁盘：【可用磁盘】 / 【总磁盘】\n- 系统：【系统名称】 【系统版本】\n\n⏰ 查询时间：【当前时间】\n📍 来源群组：【条件#【群名称】=##群聊：【群名称】】",
+      "cooldown": 30,
+      "timeout": 30,
+      "max_retries": 3,
+      "retry_delay": 1,
+      "error_message": "系统状态查询失败，请稍后重试",
+      "success_codes": [200, 201, 202],
+      "encode_json": true,
+      "follow_redirects": true,
+      "verify_ssl": true
+    },
+    {
+      "name": "计算器",
+      "enabled": true,
+      "use_prefix": true,
+      "read_after_command": true,
+      "trigger": "计算",
+      "url": "https://httpbin.org/post",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Jianer-CustomAPI/1.0"
+      },
+      "body_template": {
+        "expression": "【用户消息】",
+        "user": "【发送者昵称】",
+        "timestamp": "【时间戳】"
+      },
+      "response_template": "🧮 计算结果\n\n📝 表达式：【用户消息】\n📜 结果：【计算#【用户消息】】\n\n👤 计算者：【发送者昵称】\n⏰ 计算时间：【当前时间】\n\n💡 提示：支持基本的数学运算 (+, -, *, /, 括号)",
+      "cooldown": 2,
+      "timeout": 15,
+      "max_retries": 2,
+      "retry_delay": 1,
+      "error_message": "计算失败，请检查表达式是否正确",
+      "success_codes": [200, 201, 202],
+      "encode_json": true,
+      "follow_redirects": true,
+      "verify_ssl": true
+    },
+    {
+      "name": "智能问候",
+      "enabled": true,
+      "use_prefix": true,
+      "read_after_command": false,
+      "trigger": "问候",
+      "url": "https://httpbin.org/get",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Jianer-CustomAPI/1.0"
+      },
+      "body_template": {},
+      "response_template": "👋 【条件#【时】<6#深夜好#【条件#【时】<12#早上好#【条件#【时】<18#下午好#晚上好】】】，【发送者昵称】！\n\n🕐 现在是【当前时间】\n📅 今天是星期【星期】\n🎲 你的幸运数字是：【随机数字1-100】\n\n【条件#【群名称】=##私聊中与你问候~#在【群名称】群里向你问好！】",
+      "cooldown": 10,
+      "timeout": 15,
+      "max_retries": 2,
+      "retry_delay": 1,
+      "error_message": "问候功能暂时不可用，但依然向你问好！",
+      "success_codes": [200, 201, 202],
+      "encode_json": true,
+      "follow_redirects": true,
+      "verify_ssl": true
+    }
+  ]
+}

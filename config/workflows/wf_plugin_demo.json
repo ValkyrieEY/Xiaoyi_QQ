@@ -1,0 +1,58 @@
+{
+  "id": "wf_plugin_demo",
+  "name": "插件调用演示",
+  "description": "演示如何在工作流中调用插件",
+  "enabled": true,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-01-13T10:00:00",
+  "routes": [
+    {
+      "id": "route_plugin_01",
+      "name": "图片生成路由",
+      "rule_type": "regex",
+      "condition": "工作流.*生图",
+      "priority": 90,
+      "enabled": true,
+      "description": "当消息匹配'工作流.*生图'时触发"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_check_permission",
+      "name": "检查用户权限",
+      "type": "condition",
+      "config": {
+        "condition": "'ADMINS' in ${user_permissions} or '管理员' in ${user_permissions}",
+        "true_steps": ["step_generate_image"],
+        "false_steps": ["step_no_permission"]
+      },
+      "enabled": true,
+      "description": "检查用户是否有权限使用生图功能"
+    },
+    {
+      "id": "step_generate_image",
+      "name": "调用生图插件",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "GenerateFromACG",
+        "parameters": {
+          "order": "生图 ACG 随机"
+        },
+        "save_result": true,
+        "result_variable": "image_result"
+      },
+      "enabled": true,
+      "description": "调用ACG生图插件"
+    },
+    {
+      "id": "step_no_permission",
+      "name": "权限不足提示",
+      "type": "message",
+      "config": {
+        "message": "抱歉，您没有使用工作流生图功能的权限。"
+      },
+      "enabled": true,
+      "description": "权限不足时的提示消息"
+    }
+  ]
+}

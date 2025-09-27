@@ -1,0 +1,37 @@
+{
+  "apis": [
+    {
+      "name": "示例API",
+      "enabled": false,
+      "use_prefix": true,
+      "read_after_command": false,
+      "trigger": "测试",
+      "url": "https://example.com/api",
+      "method": "GET",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Jianer-CustomAPI/1.0"
+      },
+      "body_template": {
+        "message": "【用户消息】",
+        "user_id": "【发送者QQ】",
+        "group_id": "【群号】",
+        "timestamp": "【时间戳】"
+      },
+      "response_template": "API返回: 【纯文本】\n发送者：【发送者昵称】\n时间：【当前时间】",
+      "cooldown": 0,
+      "timeout": 30,
+      "max_retries": 3,
+      "retry_delay": 1,
+      "error_message": "API调用失败，请稍后重试",
+      "success_codes": [
+        200,
+        201,
+        202
+      ],
+      "encode_json": true,
+      "follow_redirects": true,
+      "verify_ssl": true
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "wf_tutorial_plugin",
+  "name": "插件调用教程",
+  "description": "展示如何在工作流中调用各种插件",
+  "enabled": true,
+  "created_at": "2025-01-13T12:00:00",
+  "updated_at": "2025-01-13T12:00:00",
+  "routes": [
+    {
+      "id": "route_tutorial",
+      "name": "教程触发",
+      "rule_type": "keyword",
+      "condition": "工作流教程",
+      "priority": 110,
+      "enabled": true,
+      "description": "当消息包含'工作流教程'时触发"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_welcome",
+      "name": "欢迎消息",
+      "type": "message",
+      "config": {
+        "message": "🎓 欢迎使用工作流插件调用教程！\n\n接下来将演示如何调用不同类型的插件...",
+        "reply": true
+      },
+      "enabled": true,
+      "description": "显示欢迎信息"
+    },
+    {
+      "id": "step_delay_1",
+      "name": "短暂延迟",
+      "type": "delay",
+      "config": {
+        "delay": 2
+      },
+      "enabled": true,
+      "description": "等待2秒"
+    },
+    {
+      "id": "step_call_hitokoto",
+      "name": "调用一言插件",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "Hitokota",
+        "parameters": {
+          "order": "一言"
+        },
+        "save_result": true,
+        "result_variable": "hitokoto_result"
+      },
+      "enabled": true,
+      "description": "获取一言名句"
+    },
+    {
+      "id": "step_show_result",
+      "name": "显示结果",
+      "type": "message",
+      "config": {
+        "message": "✨ 工作流成功调用了一言插件！\n\n插件返回结果: ${hitokoto_result}\n\n🎯 这就是工作流的强大之处：可以串联多个插件和操作！"
+      },
+      "enabled": true,
+      "description": "显示插件调用结果"
+    }
+  ]
+}

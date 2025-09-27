@@ -1,0 +1,9 @@
+{
+  "enabled": true,
+  "max_execution_time": 60,
+  "log_level": "info",
+  "default_priority": 100,
+  "concurrent_workflows": 10,
+  "auto_reload": true,
+  "debug_mode": false
+}

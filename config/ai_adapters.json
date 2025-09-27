@@ -1,0 +1,17 @@
+{
+    "default_adapter": "deepseek",
+    "adapters": {
+        "gemini": {
+            "api_key": "YOUR_GEMINI_API_KEY",
+            "model": "gemini-pro"
+        },
+        "deepseek": {
+            "api_key": "sk-e4ab89d365df487d91135c51c276be9d",
+            "model": "deepseek-chat"
+        }
+    },
+    "memory": {
+        "scope": "conversation",
+        "max_tokens": 1000
+    }
+} 

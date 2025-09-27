@@ -1,0 +1,42 @@
+{
+  "id": "wf_example_01",
+  "name": "示例工作流",
+  "description": "演示如何使用工作流系统处理用户消息",
+  "enabled": true,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-01-13T10:00:00",
+  "routes": [
+    {
+      "id": "route_01",
+      "name": "帮助关键词路由",
+      "rule_type": "keyword",
+      "condition": "工作流帮助",
+      "priority": 100,
+      "enabled": true,
+      "description": "当消息包含'工作流帮助'时触发"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_01",
+      "name": "设置用户变量",
+      "type": "variable",
+      "config": {
+        "variable_name": "user_name",
+        "variable_value": "${user_id}"
+      },
+      "enabled": true,
+      "description": "设置当前用户ID为变量"
+    },
+    {
+      "id": "step_02",
+      "name": "发送帮助消息",
+      "type": "message",
+      "config": {
+        "message": "您好 ${user_name}！这是工作流系统的帮助信息：\n\n工作流功能:\n- 支持消息路由分流\n- 支持插件调用\n- 支持条件判断\n- 支持变量管理\n\n使用 '-工作流列表' 查看所有可用工作流"
+      },
+      "enabled": true,
+      "description": "发送工作流帮助信息"
+    }
+  ]
+}

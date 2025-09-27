@@ -1,0 +1,7 @@
+{
+  "web_port": 8080,
+  "auto_open_browser": false,
+  "theme": "light",
+  "admin_password": "",
+  "log_api_calls": true
+}

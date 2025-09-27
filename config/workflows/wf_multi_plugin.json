@@ -1,0 +1,132 @@
+{
+  "id": "wf_multi_plugin",
+  "name": "多插件协作演示",
+  "description": "展示如何让多个插件协同工作",
+  "enabled": true,
+  "created_at": "2025-01-13T12:00:00",
+  "updated_at": "2025-01-13T12:00:00",
+  "routes": [
+    {
+      "id": "route_combo",
+      "name": "组合功能触发",
+      "rule_type": "keyword",
+      "condition": "工作流组合功能",
+      "priority": 100,
+      "enabled": true,
+      "description": "触发多插件协作"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_start_message",
+      "name": "开始消息",
+      "type": "message",
+      "config": {
+        "message": "🚀 启动多插件协作模式...\n\n将依次调用：问候 → 一言 → 大头照 → 检测你今天的表现",
+        "reply": true
+      },
+      "enabled": true,
+      "description": "说明即将执行的操作"
+    },
+    {
+      "id": "step_hello_world",
+      "name": "问候世界",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "HelloWorld",
+        "parameters": {
+          "order": "你好，世界"
+        },
+        "save_result": true,
+        "result_variable": "hello_result"
+      },
+      "enabled": true,
+      "description": "调用HelloWorld插件"
+    },
+    {
+      "id": "step_delay_1",
+      "name": "第一次延迟",
+      "type": "delay",
+      "config": {
+        "delay": 2
+      },
+      "enabled": true,
+      "description": "插件调用间隔"
+    },
+    {
+      "id": "step_get_quote",
+      "name": "获取名言",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "Hitokota",
+        "parameters": {
+          "order": "一言"
+        },
+        "save_result": true,
+        "result_variable": "quote_result"
+      },
+      "enabled": true,
+      "description": "获取励志名言"
+    },
+    {
+      "id": "step_delay_2",
+      "name": "第二次延迟",
+      "type": "delay",
+      "config": {
+        "delay": 2
+      },
+      "enabled": true,
+      "description": "插件调用间隔"
+    },
+    {
+      "id": "step_head_image",
+      "name": "生成大头照",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "HeadImage",
+        "parameters": {
+          "order": "大头照"
+        },
+        "save_result": true,
+        "result_variable": "head_image_result"
+      },
+      "enabled": true,
+      "description": "生成用户头像"
+    },
+    {
+      "id": "step_delay_3",
+      "name": "第三次延迟",
+      "type": "delay",
+      "config": {
+        "delay": 2
+      },
+      "enabled": true,
+      "description": "插件调用间隔"
+    },
+    {
+      "id": "step_check_performance",
+      "name": "检测今日表现",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "SoGood",
+        "parameters": {
+          "order": "我今天棒不棒"
+        },
+        "save_result": true,
+        "result_variable": "performance_result"
+      },
+      "enabled": true,
+      "description": "检测用户今日表现"
+    },
+    {
+      "id": "step_summary",
+      "name": "总结报告",
+      "type": "message",
+      "config": {
+        "message": "🎉 多插件协作完成！\n\n📋 执行摘要：\n✅ HelloWorld: ${hello_result}\n✅ 今日名言: ${quote_result}\n✅ 大头照: ${head_image_result}\n✅ 今日表现: ${performance_result}\n\n这就是工作流的强大之处：可以像指挥官一样协调各个插件！"
+      },
+      "enabled": true,
+      "description": "显示所有操作的总结"
+    }
+  ]
+}

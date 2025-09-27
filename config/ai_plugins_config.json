@@ -1,0 +1,31 @@
+{
+  "current_plugin": "deepseek",
+  "plugins": {
+    "deepseek": {
+      "api_key": "sk-e4ab89d365df487d91135c51c276be9d",
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/",
+      "history_limit": 7,
+      "enabled": true
+    },
+    "gemini": {
+      "api_key": "AIzaSyC20CJ02a6ydjBhpW7XCUCGwTYcB6JztDA",
+      "model": "gemini-2.0-flash-thinking-exp-01-21",
+      "generation_config": {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 64,
+        "max_output_tokens": 8192,
+        "response_mime_type": "text/plain"
+      },
+      "enabled": true
+    },
+    "chatgpt": {
+      "api_key": "sk-378jFI4OQr8yanQN8c1cAc3544A44858939cEb431aB8579a",
+      "model_35": "gpt-3.5-turbo-16k",
+      "model_4": "gpt-4o-mini",
+      "default_model": "gpt-4o-mini",
+      "enabled": true
+    }
+  }
+}

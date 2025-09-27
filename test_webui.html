@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CustomAPI WebUI 测试</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1>CustomAPI WebUI 测试</h1>
+    <button onclick="addApi()">添加API</button>
+    <button onclick="showHelp()">使用指南</button>
+    <button onclick="saveConfig()">保存配置</button>
+    
+    <div id="apiList"></div>
+
+    <script>
+        let config = {
+            apis: [
+                {
+                    name: "测试API",
+                    trigger: "测试",
+                    enabled: true,
+                    url: "https://example.com"
+                }
+            ]
+        };
+
+        // 添加新API
+        async function addApi() {
+            const result = await Swal.fire({
+                title: '添加新API',
+                html: `
+                    <div class="space-y-4">
+                        <input id="apiName" class="w-full p-2 border rounded" 
+                            placeholder="API名称">
+                        <input id="apiTrigger" class="w-full p-2 border rounded" 
+                            placeholder="触发指令">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: '添加',
+                cancelButtonText: '取消'
+            });
+
+            if (result.isConfirmed) {
+                const name = document.getElementById('apiName').value || "新API";
+                const trigger = document.getElementById('apiTrigger').value || "测试";
+                
+                config.apis.push({
+                    name: name,
+                    trigger: trigger,
+                    enabled: false,
+                    url: "https://example.com/api"
+                });
+                
+                renderApis();
+                
+                Swal.fire({
+                    title: 'API已添加',
+                    text: '请完善API配置并保存',
+                    icon: 'success',
+                    timer: 2000
+                });
+            }
+        }
+
+        // 保存配置
+        async function saveConfig() {
+            Swal.fire({
+                title: '保存成功!',
+                text: '配置已成功保存到服务器',
+                icon: 'success',
+                timer: 2000
+            });
+        }
+
+        // 显示帮助
+        function showHelp() {
+            Swal.fire({
+                title: '使用指南',
+                html: `
+                    <div class="text-left space-y-4">
+                        <p>1. 点击"添加API"创建新的API配置</p>
+                        <p>2. 填写API基本信息(名称、触发指令)</p>
+                        <p>3. 设置API请求参数(URL、方法等)</p>
+                        <p>4. 使用响应模板定制返回内容</p>
+                        <p>5. 点击"保存配置"保存更改</p>
+                    </div>
+                `,
+                confirmButtonText: '知道了'
+            });
+        }
+
+        // 渲染API列表
+        function renderApis() {
+            const apiList = document.getElementById('apiList');
+            if (!apiList) {
+                console.error('apiList 元素不存在');
+                return;
+            }
+
+            if (!config || !config.apis) {
+                console.warn('配置数据不存在或格式错误');
+                config = { apis: [] };
+            }
+            
+            if (config.apis.length === 0) {
+                apiList.innerHTML = `
+                    <div class="text-center py-12">
+                        <p class="text-gray-500 text-lg mb-4">暂无API配置</p>
+                        <button onclick="addApi()" class="btn px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                            添加第一个API
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            apiList.innerHTML = config.apis.map((api, index) => {
+                return `
+                <div class="api-card bg-gray-50 rounded-lg p-4 border mb-4">
+                    <div class="flex justify-between mb-4">
+                        <input type="text" value="${api.name}" 
+                               class="text-xl font-bold bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500">
+                        <label class="flex items-center">
+                            <input type="checkbox" ${api.enabled ? 'checked' : ''} 
+                                   class="mr-2">
+                            启用
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block mb-1">触发指令</label>
+                        <input type="text" value="${api.trigger}" 
+                               class="w-full p-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block mb-1">API URL</label>
+                        <input type="text" value="${api.url}" 
+                               class="w-full p-2 border rounded">
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // 初始化
+        window.addEventListener('load', function() {
+            renderApis();
+        });
+    </script>
+</body>
+</html>

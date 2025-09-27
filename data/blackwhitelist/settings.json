@@ -1,0 +1,18 @@
+{
+  "global": {
+    "enabled": true,
+    "notify": true,
+    "silent": false,
+    "action": "notify",
+    "mute_duration": 600
+  },
+  "groups": {
+    "603033293": {
+      "enabled": true,
+      "notify": true,
+      "silent": false,
+      "action": "禁言",
+      "mute_duration": 600
+    }
+  }
+}

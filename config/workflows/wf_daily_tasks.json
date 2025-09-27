@@ -1,0 +1,66 @@
+{
+  "id": "wf_daily_tasks",
+  "name": "每日任务流",
+  "description": "处理每日定时任务和签到功能",
+  "enabled": true,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-01-13T10:00:00",
+  "routes": [
+    {
+      "id": "route_morning_greeting",
+      "name": "早安问候",
+      "rule_type": "time",
+      "condition": "08:00",
+      "priority": 80,
+      "enabled": true,
+      "description": "每天早上8点发送问候消息"
+    },
+    {
+      "id": "route_checkin",
+      "name": "签到功能",
+      "rule_type": "keyword",
+      "condition": "工作流签到",
+      "priority": 90,
+      "enabled": true,
+      "description": "用户签到功能"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_greeting",
+      "name": "发送问候",
+      "type": "message",
+      "config": {
+        "message": "🌅 早上好！新的一天开始了，祝大家今天过得愉快！\n\n发送 '工作流签到' 来进行每日签到吧～"
+      },
+      "enabled": true,
+      "description": "发送早安问候消息"
+    },
+    {
+      "id": "step_checkin_plugin",
+      "name": "调用签到插件",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "GroupCheckIn",
+        "parameters": {
+          "order": "签到"
+        },
+        "save_result": true,
+        "result_variable": "checkin_result"
+      },
+      "enabled": true,
+      "description": "调用群组签到插件"
+    },
+    {
+      "id": "step_checkin_response",
+      "name": "签到回复",
+      "type": "message",
+      "config": {
+        "message": "✅ 工作流签到处理完成！签到结果: ${checkin_result}",
+        "reply": true
+      },
+      "enabled": true,
+      "description": "确认签到完成"
+    }
+  ]
+}

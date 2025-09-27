@@ -1,0 +1,66 @@
+{
+  "id": "wf_admin_tools",
+  "name": "管理员工具流",
+  "description": "为管理员提供快速管理工具的工作流",
+  "enabled": true,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-01-13T10:00:00",
+  "routes": [
+    {
+      "id": "route_admin_quick",
+      "name": "管理员快速操作",
+      "rule_type": "regex",
+      "condition": "快速(禁言|踢出|警告).*",
+      "priority": 120,
+      "enabled": true,
+      "description": "管理员快速操作命令"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_check_admin",
+      "name": "验证管理员权限",
+      "type": "condition",
+      "config": {
+        "condition": "'ADMINS' in ${user_permissions}",
+        "true_steps": ["step_parse_action"],
+        "false_steps": ["step_deny_access"]
+      },
+      "enabled": true,
+      "description": "检查用户是否具有管理员权限"
+    },
+    {
+      "id": "step_deny_access",
+      "name": "拒绝访问",
+      "type": "message",
+      "config": {
+        "message": "您没有权限执行管理员操作。",
+        "reply": true
+      },
+      "enabled": true,
+      "description": "权限不足时的提示"
+    },
+    {
+      "id": "step_parse_action",
+      "name": "解析操作类型",
+      "type": "variable",
+      "config": {
+        "variable_name": "action_type",
+        "variable_value": "管理操作"
+      },
+      "enabled": true,
+      "description": "解析用户想要执行的操作类型"
+    },
+    {
+      "id": "step_confirm_action",
+      "name": "确认操作",
+      "type": "message",
+      "config": {
+        "message": "管理员操作已执行。详细信息请查看系统日志。",
+        "reply": true
+      },
+      "enabled": true,
+      "description": "确认操作已执行"
+    }
+  ]
+}

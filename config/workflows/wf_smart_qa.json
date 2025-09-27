@@ -1,0 +1,80 @@
+{
+  "id": "wf_smart_qa",
+  "name": "智能问答助手",
+  "description": "根据问题类型自动分流到不同处理流程",
+  "enabled": false,
+  "created_at": "2025-01-13T12:00:00",
+  "updated_at": "2025-01-13T12:00:00",
+  "routes": [
+    {
+      "id": "route_question",
+      "name": "问题检测",
+      "rule_type": "regex",
+      "condition": ".*\\?|.*？|如何.*|怎么.*|什么是.*",
+      "priority": 95,
+      "enabled": true,
+      "description": "检测问题类型的消息"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_analyze_question",
+      "name": "分析问题类型",
+      "type": "variable",
+      "config": {
+        "variable_name": "question_type",
+        "variable_value": "general"
+      },
+      "enabled": true,
+      "description": "分析问题类型"
+    },
+    {
+      "id": "step_check_image_question",
+      "name": "检查是否需要图像",
+      "type": "condition",
+      "config": {
+        "condition": "'图' in '${order}' or '画' in '${order}' or '生成' in '${order}'",
+        "true_steps": ["step_call_image_plugin"],
+        "false_steps": ["step_text_response"]
+      },
+      "enabled": true,
+      "description": "判断是否为图像相关问题"
+    },
+    {
+      "id": "step_call_image_plugin",
+      "name": "调用图像生成",
+      "type": "plugin",
+      "config": {
+        "plugin_name": "GenerateFromACG",
+        "parameters": {
+          "order": "生图 ACG 随机"
+        },
+        "save_result": true,
+        "result_variable": "image_result"
+      },
+      "enabled": true,
+      "description": "生成图像"
+    },
+    {
+      "id": "step_text_response",
+      "name": "文本回答",
+      "type": "message",
+      "config": {
+        "message": "🤖 智能助手收到您的问题：\"${order}\"\n\n这是一个很好的问题！我会尽力为您解答。如果需要图像生成，请在问题中包含'图'或'画'等关键词。",
+        "reply": true
+      },
+      "enabled": true,
+      "description": "提供文本回答"
+    },
+    {
+      "id": "step_final_message",
+      "name": "结束消息",
+      "type": "message",
+      "config": {
+        "message": "✨ 问题处理完成！如有其他问题，随时可以询问我哦~"
+      },
+      "enabled": true,
+      "description": "结束提示"
+    }
+  ]
+}

@@ -1,0 +1,942 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>自定义API配置</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .api-card { transition: all 0.3s ease; }
+        .api-card:hover { transform: translateY(-2px); }
+        .btn { transition: all 0.2s ease; }
+        .btn:hover { transform: translateY(-1px); }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">API配置管理</h1>
+                <div class="space-x-4">
+                    <button onclick="showHelp()" class="btn px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        使用指南
+                    </button>
+                    <button onclick="addApi()" class="btn px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        添加API
+                    </button>
+                    <button onclick="saveConfig()" class="btn px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                        保存配置
+                    </button>
+                </div>
+            </div>
+
+            <!-- API列表 -->
+            <div id="apiList" class="space-y-6">
+                <!-- API卡片将在这里动态插入 -->
+            </div>
+        </div>
+
+        # 变量说明部分 - 大幅增强的变量系统
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-4">可用变量说明</h2>
+            <div class="mb-4">
+                <button onclick="toggleAllVariables()" class="btn px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                    展开/收起所有分类
+                </button>
+                <button onclick="searchVariables()" class="btn px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
+                    搜索变量
+                </button>
+                <input type="text" id="variableSearch" placeholder="搜索变量..." class="ml-2 p-2 border rounded">
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 基础用户变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-blue-100 p-2 rounded" onclick="toggleCategory(this)">
+                        📝 基础用户变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【用户消息】</code> - 用户发送的消息</li>
+                        <li><code>【原始消息】</code> - 包含前缀的原始消息</li>
+                        <li><code>【发送者QQ】</code> - 发送者QQ号</li>
+                        <li><code>【发送者昵称】</code> - 发送者昵称</li>
+                        <li><code>【发送人头像】</code> - 发送者QQ头像(CQ码)</li>
+                        <li><code>【发送人头像链接】</code> - 发送者头像URL</li>
+                        <li><code>【机器人QQ】</code> - 机器人QQ号</li>
+                        <li><code>【机器人头像】</code> - 机器人头像(CQ码)</li>
+                        <li><code>【机器人头像链接】</code> - 机器人头像URL</li>
+                    </ul>
+                </div>
+                
+                <!-- 群组信息变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-green-100 p-2 rounded" onclick="toggleCategory(this)">
+                        👥 群组信息变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【群号】</code> - 当前群号</li>
+                        <li><code>【群名称】</code> - 群组名称</li>
+                        <li><code>【群人数】</code> - 当前群人数</li>
+                        <li><code>【群最大人数】</code> - 群最大人数限制</li>
+                    </ul>
+                </div>
+
+                <!-- 时间变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-yellow-100 p-2 rounded" onclick="toggleCategory(this)">
+                        ⏰ 时间变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【当前时间】</code> - 完整日期时间</li>
+                        <li><code>【年】</code> - 当前年份</li>
+                        <li><code>【月】</code> - 当前月份(补零)</li>
+                        <li><code>【日】</code> - 当前日期(补零)</li>
+                        <li><code>【时】【分】【秒】</code> - 时分秒(补零)</li>
+                        <li><code>【时分秒】</code> - HH:MM:SS格式</li>
+                        <li><code>【星期】</code> - 星期几(中文)</li>
+                        <li><code>【星期数字】</code> - 星期几(1-7)</li>
+                        <li><code>【时间戳】</code> - Unix时间戳</li>
+                        <li><code>【毫秒时间戳】</code> - 毫秒时间戳</li>
+                        <li><code>【ISO时间】</code> - ISO格式时间</li>
+                    </ul>
+                </div>
+
+                <!-- 系统信息变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-purple-100 p-2 rounded" onclick="toggleCategory(this)">
+                        💻 系统信息变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【系统名称】</code> - 操作系统名称</li>
+                        <li><code>【系统版本】</code> - 系统版本</li>
+                        <li><code>【处理器】</code> - CPU信息</li>
+                        <li><code>【CPU使用率】</code> - CPU使用百分比</li>
+                        <li><code>【内存使用率】</code> - 内存使用百分比</li>
+                        <li><code>【可用内存】</code> - 可用内存(GB)</li>
+                        <li><code>【总内存】</code> - 总内存(GB)</li>
+                        <li><code>【磁盘使用率】</code> - 磁盘使用百分比</li>
+                        <li><code>【可用磁盘】</code> - 可用磁盘空间(GB)</li>
+                        <li><code>【总磁盘】</code> - 总磁盘空间(GB)</li>
+                    </ul>
+                </div>
+
+                <!-- 随机变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-red-100 p-2 rounded" onclick="toggleCategory(this)">
+                        🎲 随机变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【随机数字】</code> - 1-100随机数</li>
+                        <li><code>【随机数字1-10】</code> - 1-10随机数</li>
+                        <li><code>【随机数字1-1000】</code> - 1-1000随机数</li>
+                        <li><code>【随机UUID】</code> - UUID字符串</li>
+                        <li><code>【随机字符串】</code> - 8位随机字符串</li>
+                    </ul>
+                </div>
+
+                <!-- 消息处理变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-indigo-100 p-2 rounded" onclick="toggleCategory(this)">
+                        ✏️ 消息处理变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【消息长度】</code> - 消息字符长度</li>
+                        <li><code>【消息字数】</code> - 消息字数(不含空格)</li>
+                        <li><code>【消息单词数】</code> - 英文单词数量</li>
+                        <li><code>【用户消息大写】</code> - 消息转大写</li>
+                        <li><code>【用户消息小写】</code> - 消息转小写</li>
+                        <li><code>【用户消息首字母大写】</code> - 首字母大写</li>
+                        <li><code>【用户消息反转】</code> - 消息反转</li>
+                        <li><code>【跨取文本#n#m】</code> - 截取第n到m个字符</li>
+                    </ul>
+                </div>
+
+                <!-- 格式化变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-teal-100 p-2 rounded" onclick="toggleCategory(this)">
+                        📋 格式化变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【换行】</code> - 换行符</li>
+                        <li><code>【制表符】</code> - Tab制表符</li>
+                        <li><code>【空格】</code> - 单个空格</li>
+                        <li><code>【at】</code> - @发送消息的用户</li>
+                        <li><code>【at所有人】</code> - @全体成员</li>
+                    </ul>
+                </div>
+
+                <!-- API响应变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-pink-100 p-2 rounded" onclick="toggleCategory(this)">
+                        🔌 API响应变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【纯文本】</code> - API返回的文本</li>
+                        <li><code>【纯图片】</code> - API返回图片显示</li>
+                        <li><code>【图片链接】</code> - 原始图片URL</li>
+                        <li><code>【json文本#路径】</code> - JSON中的文本值</li>
+                        <li><code>【json图片#路径】</code> - JSON中的图片</li>
+                    </ul>
+                </div>
+
+                <!-- 高级功能变量 -->
+                <div class="variable-category">
+                    <h3 class="font-semibold mb-2 cursor-pointer bg-orange-100 p-2 rounded" onclick="toggleCategory(this)">
+                        ⚡ 高级功能变量 <span class="toggle-icon">▼</span>
+                    </h3>
+                    <ul class="variable-list list-disc pl-4 space-y-1 text-sm text-gray-600">
+                        <li><code>【条件#条件表达式#真值#假值】</code> - 条件判断</li>
+                        <li><code>【计算#数学表达式】</code> - 数学计算</li>
+                        <li><strong>条件表达式支持:</strong> =, !=, >, <</li>
+                        <li><strong>计算支持:</strong> +, -, *, /, (), 数字</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 变量测试区域 -->
+            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-3">🧪 变量测试器</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-2">测试模板:</label>
+                        <textarea id="testTemplate" rows="4" class="w-full p-2 border rounded" 
+                                  placeholder="输入包含变量的模板，如：你好【发送者昵称】，当前时间是【当前时间】"></textarea>
+                    </div>
+                    <div>
+                        <label class="block mb-2">预览结果:</label>
+                        <div id="testResult" class="w-full h-20 p-2 border rounded bg-white overflow-auto" 
+                             style="min-height: 80px;">在左侧输入模板后点击测试按钮</div>
+                    </div>
+                </div>
+                <button onclick="testVariables()" class="btn px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mt-2">
+                    🚀 测试变量
+                </button>
+                <button onclick="copyTestResult()" class="btn px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mt-2 ml-2">
+                    📋 复制结果
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let config = null;
+
+        // 加载配置
+        async function loadConfig() {
+            try {
+                const response = await fetch('/config');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                config = await response.json();
+                console.log('配置加载成功:', config);
+                await renderApis();
+            } catch (error) {
+                console.error('加载配置失败:', error);
+                Swal.fire({
+                    title: '配置加载失败',
+                    text: '无法从服务器获取配置，将使用默认配置。请检查网络连接。',
+                    icon: 'warning',
+                    confirmButtonText: '使用默认配置'
+                });
+                // 使用默认配置
+                config = {
+                    "apis": [
+                        {
+                            "name": "示例API",
+                            "trigger": "测试",
+                            "enabled": false,
+                            "use_prefix": true,
+                            "read_after_command": false,
+                            "url": "https://httpbin.org/post",
+                            "method": "POST",
+                            "headers": {
+                                "Content-Type": "application/json",
+                                "User-Agent": "Jianer-CustomAPI/1.0"
+                            },
+                            "body_template": {
+                                "message": "【用户消息】",
+                                "user_id": "【发送者QQ】",
+                                "group_id": "【群号】",
+                                "timestamp": "【时间戳】"
+                            },
+                            "response_template": "API返回: 【纯文本】
+发送者：【发送者昵称】
+时间：【当前时间】",
+                            "cooldown": 0,
+                            "timeout": 30,
+                            "max_retries": 3,
+                            "retry_delay": 1,
+                            "error_message": "API调用失败，请稍后重试",
+                            "success_codes": [200, 201, 202],
+                            "encode_json": true,
+                            "follow_redirects": true,
+                            "verify_ssl": true
+                        }
+                    ]
+                };
+                await renderApis();
+            }
+        }
+
+        // 保存配置
+        async function saveConfig() {
+            if (!config || !config.apis) {
+                Swal.fire({
+                    title: '保存失败',
+                    text: '没有可保存的配置数据',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            // 显示保存中状态
+            Swal.fire({
+                title: '保存中...',
+                text: '正在保存配置到服务器',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                const response = await fetch('/save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(config)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    Swal.fire({
+                        title: '保存成功!',
+                        text: '配置已成功保存到服务器',
+                        icon: 'success',
+                        timer: 2000
+                    });
+                } else {
+                    throw new Error(result.error || '保存失败');
+                }
+            } catch (error) {
+                console.error('保存配置失败:', error);
+                Swal.fire({
+                    title: '保存失败!',
+                    text: error.message || '网络连接异常，请检查服务器状态',
+                    icon: 'error',
+                    confirmButtonText: '确定'
+                });
+            }
+        }
+
+        // 渲染API列表
+        function renderApis() {
+            const apiList = document.getElementById('apiList');
+            if (!apiList) {
+                console.error('apiList 元素不存在');
+                return;
+            }
+
+            if (!config || !config.apis) {
+                console.warn('配置数据不存在或格式错误');
+                config = { apis: [] };
+            }
+            
+            if (config.apis.length === 0) {
+                apiList.innerHTML = `
+                    <div class="text-center py-12">
+                        <p class="text-gray-500 text-lg mb-4">暂无API配置</p>
+                        <button onclick="addApi()" class="btn px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                            添加第一个API
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            apiList.innerHTML = config.apis.map((api, index) => {
+                // 确保所有必要属性都存在
+                const safeApi = {
+                    name: api.name || '未命名API',
+                    trigger: api.trigger || 'test',
+                    enabled: api.enabled || false,
+                    use_prefix: api.use_prefix !== false,
+                    read_after_command: api.read_after_command || false,
+                    url: api.url || 'https://example.com/api',
+                    method: api.method || 'GET',
+                    cooldown: api.cooldown || 0,
+                    timeout: api.timeout || 30,
+                    max_retries: api.max_retries || 3,
+                    retry_delay: api.retry_delay || 1,
+                    encode_json: api.encode_json !== false,
+                    follow_redirects: api.follow_redirects !== false,
+                    verify_ssl: api.verify_ssl !== false,
+                    response_template: api.response_template || 'API返回: 【纯文本】',
+                    error_message: api.error_message || 'API调用失败，请稍后重试',
+                    headers: api.headers || { 'Content-Type': 'application/json' },
+                    body_template: api.body_template || {}
+                };
+
+                return `
+                <div class="api-card bg-gray-50 rounded-lg p-4 border">
+                    <div class="flex justify-between mb-4">
+                        <input type="text" value="${safeApi.name}" 
+                               onchange="updateApi(${index}, 'name', this.value)"
+                               class="text-xl font-bold bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500">
+                        <label class="flex items-center">
+                            <input type="checkbox" ${safeApi.enabled ? 'checked' : ''} 
+                                   onchange="updateApi(${index}, 'enabled', this.checked)"
+                                   class="mr-2">
+                            启用
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block mb-1">触发指令</label>
+                            <input type="text" value="${safeApi.trigger}" 
+                                   onchange="updateApi(${index}, 'trigger', this.value)"
+                                   class="w-full p-2 border rounded">
+                        </div>
+                        <div class="flex items-center">
+                            <label class="flex items-center">
+                                <input type="checkbox" ${safeApi.use_prefix ? 'checked' : ''} 
+                                       onchange="updateApi(${index}, 'use_prefix', this.checked)"
+                                       class="mr-2">
+                                使用指令前缀
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block mb-1">API URL</label>
+                            <input type="text" value="${safeApi.url}" 
+                                   onchange="updateApi(${index}, 'url', this.value)"
+                                   class="w-full p-2 border rounded">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">请求方法</label>
+                                <select onchange="updateApi(${index}, 'method', this.value)"
+                                        class="w-full p-2 border rounded">
+                                    <option value="GET" ${safeApi.method === 'GET' ? 'selected' : ''}>GET</option>
+                                    <option value="POST" ${safeApi.method === 'POST' ? 'selected' : ''}>POST</option>
+                                    <option value="PUT" ${safeApi.method === 'PUT' ? 'selected' : ''}>PUT</option>
+                                    <option value="DELETE" ${safeApi.method === 'DELETE' ? 'selected' : ''}>DELETE</option>
+                                    <option value="PATCH" ${safeApi.method === 'PATCH' ? 'selected' : ''}>PATCH</option>
+                                    <option value="HEAD" ${safeApi.method === 'HEAD' ? 'selected' : ''}>HEAD</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">冷却时间(秒)</label>
+                                <input type="number" value="${safeApi.cooldown}" min="0"
+                                       onchange="updateApi(${index}, 'cooldown', parseInt(this.value))"
+                                       class="w-full p-2 border rounded">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">超时时间(秒)</label>
+                                <input type="number" value="${safeApi.timeout}" min="1" max="300"
+                                       onchange="updateApi(${index}, 'timeout', parseInt(this.value))"
+                                       class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label class="block mb-1">最大重试次数</label>
+                                <input type="number" value="${safeApi.max_retries}" min="0" max="10"
+                                       onchange="updateApi(${index}, 'max_retries', parseInt(this.value))"
+                                       class="w-full p-2 border rounded">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="flex items-center">
+                                <label class="flex items-center">
+                                    <input type="checkbox" ${safeApi.encode_json ? 'checked' : ''} 
+                                           onchange="updateApi(${index}, 'encode_json', this.checked)"
+                                           class="mr-2">
+                                    JSON编码
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <label class="flex items-center">
+                                    <input type="checkbox" ${safeApi.follow_redirects ? 'checked' : ''} 
+                                           onchange="updateApi(${index}, 'follow_redirects', this.checked)"
+                                           class="mr-2">
+                                    跟随重定向
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <label class="flex items-center">
+                                    <input type="checkbox" ${safeApi.verify_ssl ? 'checked' : ''} 
+                                           onchange="updateApi(${index}, 'verify_ssl', this.checked)"
+                                           class="mr-2">
+                                    SSL验证
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1">响应模板</label>
+                            <textarea onchange="updateApi(${index}, 'response_template', this.value)"
+                                      class="w-full p-2 border rounded h-20">${safeApi.response_template}</textarea>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1">错误消息模板</label>
+                            <textarea onchange="updateApi(${index}, 'error_message', this.value)"
+                                      class="w-full p-2 border rounded h-16" 
+                                      placeholder="API调用失败时显示的错误消息">${safeApi.error_message}</textarea>
+                        </div>
+
+                        <div class="flex items-center mb-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" ${safeApi.read_after_command ? 'checked' : ''} 
+                                       onchange="updateApi(${index}, 'read_after_command', this.checked)"
+                                       class="mr-2">
+                                读取指令后消息
+                            </label>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1">请求头(Headers)</label>
+                            <textarea onchange="updateApiHeaders(${index}, this.value)"
+                                      class="w-full p-2 border rounded h-20">${JSON.stringify(safeApi.headers, null, 2)}</textarea>
+                            <p class="text-sm text-gray-500 mt-1">JSON格式,例如: {"Content-Type": "application/json"}</p>
+                        </div>
+
+                        <div>
+                            <label class="block mb-1">请求体模板(Body)</label>
+                            <textarea onchange="updateApiBody(${index}, this.value)"
+                                      class="w-full p-2 border rounded h-20">${JSON.stringify(safeApi.body_template, null, 2)}</textarea>
+                            <p class="text-sm text-gray-500 mt-1">JSON格式,支持使用变量</p>
+                        </div>
+
+                    </div>
+
+                    <div class="flex justify-end space-x-2 mt-4">
+                        <button onclick="testApi(${index})"
+                                class="btn px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            测试API
+                        </button>
+                        <button onclick="duplicateApi(${index})"
+                                class="btn px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                            复制
+                        </button>
+                        <button onclick="deleteApi(${index})"
+                                class="btn px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            删除
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // 更新API
+        function updateApi(index, key, value) {
+            if (!config || !config.apis || !config.apis[index]) {
+                console.error('API不存在:', index);
+                return;
+            }
+            config.apis[index][key] = value;
+            console.log(`更新API ${index}.${key} = ${value}`);
+        }
+
+        // 更新Headers(安全JSON解析)
+        function updateApiHeaders(index, value) {
+            try {
+                const headers = JSON.parse(value);
+                updateApi(index, 'headers', headers);
+            } catch (error) {
+                console.error('请求头JSON格式错误:', error);
+                Swal.fire({
+                    title: 'JSON格式错误',
+                    text: '请检查请求头的JSON格式是否正确',
+                    icon: 'error',
+                    timer: 3000
+                });
+            }
+        }
+
+        // 更新Body(安全JSON解析)
+        function updateApiBody(index, value) {
+            try {
+                const body = JSON.parse(value);
+                updateApi(index, 'body_template', body);
+            } catch (error) {
+                console.error('请求体JSON格式错误:', error);
+                Swal.fire({
+                    title: 'JSON格式错误',
+                    text: '请检查请求体的JSON格式是否正确',
+                    icon: 'error',
+                    timer: 3000
+                });
+            }
+        }
+
+        // 测试API功能
+        function testApi(index) {
+            if (!config || !config.apis || !config.apis[index]) {
+                Swal.fire({
+                    title: 'API不存在',
+                    text: '无法找到指定的API配置',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            const api = config.apis[index];
+            Swal.fire({
+                title: 'API测试',
+                html: `
+                    <div class="text-left space-y-2">
+                        <p><strong>API名称:</strong> ${api.name}</p>
+                        <p><strong>触发指令:</strong> ${api.trigger}</p>
+                        <p><strong>请求方法:</strong> ${api.method}</p>
+                        <p><strong>URL:</strong> ${api.url}</p>
+                        <p><strong>启用状态:</strong> ${api.enabled ? '已启用' : '未启用'}</p>
+                        <hr>
+                        <p class="text-sm text-gray-600">注意：这只是配置预览，实际测试需要在QQ群中发送指令</p>
+                    </div>
+                `,
+                confirmButtonText: '知道了'
+            });
+        }
+
+        // 复制API
+        function duplicateApi(index) {
+            if (!config || !config.apis || !config.apis[index]) {
+                Swal.fire({
+                    title: 'API不存在',
+                    text: '无法找到指定的API配置',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            const originalApi = config.apis[index];
+            const duplicatedApi = JSON.parse(JSON.stringify(originalApi)); // 深拷贝
+            duplicatedApi.name = originalApi.name + ' (副本)';
+            duplicatedApi.trigger = originalApi.trigger + '_copy';
+            duplicatedApi.enabled = false; // 副本默认禁用
+
+            config.apis.push(duplicatedApi);
+            renderApis();
+            
+            // 滚动到新添加的API
+            setTimeout(() => {
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 100);
+
+            Swal.fire({
+                title: 'API已复制',
+                text: '请修改副本的名称和触发指令',
+                icon: 'success',
+                timer: 2000
+            });
+        }
+
+        // 添加新API
+        async function addApi() {
+            const result = await Swal.fire({
+                title: '添加新API',
+                html: `
+                    <div class="space-y-4">
+                        <input id="apiName" class="w-full p-2 border rounded" 
+                            placeholder="API名称">
+                        <input id="apiTrigger" class="w-full p-2 border rounded" 
+                            placeholder="触发指令">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: '添加',
+                cancelButtonText: '取消'
+            });
+
+            if (result.isConfirmed) {
+                const name = document.getElementById('apiName').value || "新API";
+                const trigger = document.getElementById('apiTrigger').value || "测试";
+                
+                config.apis.push({
+                    name: name,
+                    trigger: trigger,
+                    enabled: false,
+                    use_prefix: true,
+                    read_after_command: false,
+                    url: "https://example.com/api",
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "User-Agent": "Jianer-CustomAPI/1.0"
+                    },
+                    body_template: {
+                        "message": "【用户消息】",
+                        "user_id": "【发送者QQ】",
+                        "group_id": "【群号】",
+                        "timestamp": "【时间戳】"
+                    },
+                    response_template: "API返回: 【纯文本】
+发送者：【发送者昵称】
+时间：【当前时间】",
+                    cooldown: 0,
+                    timeout: 30,
+                    max_retries: 3,
+                    retry_delay: 1,
+                    error_message: "API调用失败，请稍后重试",
+                    success_codes: [200, 201, 202],
+                    encode_json: true,
+                    follow_redirects: true,
+                    verify_ssl: true
+                });
+                
+                renderApis();
+                // 滚动到新添加的API
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                Swal.fire({
+                    title: 'API已添加',
+                    text: '请完善API配置并保存',
+                    icon: 'success',
+                    timer: 2000
+                });
+            }
+        }
+
+        // 删除API
+        function deleteApi(index) {
+            Swal.fire({
+                title: '确认删除?',
+                text: `确定要删除 "${config.apis[index].name}" 吗？`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '删除',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    config.apis.splice(index, 1);
+                    renderApis();
+                }
+            });
+        }
+
+        // 显示帮助
+        function showHelp() {
+            Swal.fire({
+                title: '使用指南',
+                html: `
+                    <div class="text-left space-y-4">
+                        <p>1. 点击"添加API"创建新的API配置</p>
+                        <p>2. 填写API基本信息(名称、触发指令)</p>
+                        <p>3. 设置API请求参数(URL、方法等)</p>
+                        <p>4. 使用响应模板定制返回内容</p>
+                        <p>5. 点击"保存配置"保存更改</p>
+                        <p><strong>新功能:</strong> 使用变量测试器测试变量效果！</p>
+                    </div>
+                `,
+                confirmButtonText: '知道了'
+            });
+        }
+
+        // 变量分类展开/收起功能
+        function toggleCategory(element) {
+            const list = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                list.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+
+        function toggleAllVariables() {
+            const categories = document.querySelectorAll('.variable-category');
+            const firstList = categories[0].querySelector('.variable-list');
+            const shouldShow = firstList.style.display === 'none';
+            
+            categories.forEach(category => {
+                const list = category.querySelector('.variable-list');
+                const icon = category.querySelector('.toggle-icon');
+                list.style.display = shouldShow ? 'block' : 'none';
+                icon.textContent = shouldShow ? '▼' : '▶';
+            });
+        }
+
+        function searchVariables() {
+            const searchTerm = document.getElementById('variableSearch').value.toLowerCase();
+            const categories = document.querySelectorAll('.variable-category');
+            
+            categories.forEach(category => {
+                const items = category.querySelectorAll('li');
+                let hasVisibleItems = false;
+                
+                items.forEach(item => {
+                    if (searchTerm === '' || item.textContent.toLowerCase().includes(searchTerm)) {
+                        item.style.display = 'list-item';
+                        hasVisibleItems = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // 显示/隐藏分类
+                category.style.display = hasVisibleItems || searchTerm === '' ? 'block' : 'none';
+                
+                // 如果有搜索结果，展开分类
+                if (hasVisibleItems && searchTerm !== '') {
+                    const list = category.querySelector('.variable-list');
+                    const icon = category.querySelector('.toggle-icon');
+                    list.style.display = 'block';
+                    icon.textContent = '▼';
+                }
+            });
+        }
+
+        function testVariables() {
+            const template = document.getElementById('testTemplate').value;
+            if (!template.trim()) {
+                document.getElementById('testResult').innerHTML = '请输入模板内容';
+                return;
+            }
+            
+            // 模拟变量替换（用于测试显示）
+            let result = template;
+            const mockData = {
+                '【用户消息】': '测试消息内容',
+                '【原始消息】': '-测试消息内容',
+                '【发送者QQ】': '123456789',
+                '【发送者昵称】': '测试用户',
+                '【群号】': '987654321',
+                '【群名称】': '测试群组',
+                '【群人数】': '50',
+                '【机器人QQ】': '3456789012',
+                '【当前时间】': new Date().toLocaleString('zh-CN'),
+                '【年】': new Date().getFullYear().toString(),
+                '【月】': (new Date().getMonth() + 1).toString().padStart(2, '0'),
+                '【日】': new Date().getDate().toString().padStart(2, '0'),
+                '【时】': new Date().getHours().toString().padStart(2, '0'),
+                '【分】': new Date().getMinutes().toString().padStart(2, '0'),
+                '【秒】': new Date().getSeconds().toString().padStart(2, '0'),
+                '【时分秒】': new Date().toTimeString().substring(0, 8),
+                '【星期】': ['日', '一', '二', '三', '四', '五', '六'][new Date().getDay()],
+                '【系统名称】': 'Windows',
+                '【CPU使用率】': '15.6%',
+                '【内存使用率】': '68.2%',
+                '【随机数字】': Math.floor(Math.random() * 100 + 1).toString(),
+                '【随机数字1-10】': Math.floor(Math.random() * 10 + 1).toString(),
+                '【消息长度】': '测试消息内容'.length.toString(),
+                '【消息字数】': '测试消息内容'.replace(/\s/g, '').length.toString(),
+                '【用户消息大写】': '测试消息内容'.toUpperCase(),
+                '【用户消息小写】': '测试消息内容'.toLowerCase(),
+                '【机器人名称】': '简儿',
+                '【触发前缀】': '-',
+                '【换行】': '
+',
+                '【空格】': ' ',
+                '【at】': '@测试用户',
+                '【纯文本】': 'API返回的文本内容',
+                '【json文本#data.message】': 'JSON中的文本内容'
+            };
+            
+            // 处理跨取文本
+            const crossMatches = result.match(/【跨取文本#(\d+)#(\d+)】/g);
+            if (crossMatches) {
+                crossMatches.forEach(match => {
+                    const nums = match.match(/\d+/g);
+                    if (nums && nums.length >= 2) {
+                        const start = parseInt(nums[0]);
+                        const end = parseInt(nums[1]);
+                        const text = '测试消息内容';
+                        const extracted = text.substring(start - 1, end);
+                        result = result.replace(match, extracted);
+                    }
+                });
+            }
+            
+            // 处理条件变量
+            const conditionMatches = result.match(/【条件#([^#]+)#([^#]*)#([^】]*)】/g);
+            if (conditionMatches) {
+                conditionMatches.forEach(match => {
+                    const parts = match.match(/【条件#([^#]+)#([^#]*)#([^】]*)】/);
+                    if (parts) {
+                        const condition = parts[1];
+                        const trueVal = parts[2];
+                        const falseVal = parts[3];
+                        // 简单模拟条件判断
+                        let conditionResult = false;
+                        if (condition.includes('=')) {
+                            conditionResult = Math.random() > 0.5; // 随机结果用于演示
+                        }
+                        result = result.replace(match, conditionResult ? trueVal : falseVal);
+                    }
+                });
+            }
+            
+            // 处理计算变量
+            const calcMatches = result.match(/【计算#([^】]+)】/g);
+            if (calcMatches) {
+                calcMatches.forEach(match => {
+                    const expr = match.match(/【计算#([^】]+)】/)[1];
+                    try {
+                        // 安全计算（仅用于演示）
+                        if (/^[0-9+\-*/.() ]+$/.test(expr)) {
+                            const calcResult = eval(expr);
+                            result = result.replace(match, calcResult.toString());
+                        } else {
+                            result = result.replace(match, '表达式错误');
+                        }
+                    } catch (e) {
+                        result = result.replace(match, '计算失败');
+                    }
+                });
+            }
+            
+            // 替换所有模拟数据
+            for (const [key, value] of Object.entries(mockData)) {
+                result = result.replace(new RegExp(key.replace(/[.*+?^${}()|[\]\]/g, '\$&'), 'g'), value);
+            }
+            
+            document.getElementById('testResult').innerHTML = result.replace(/
+/g, '<br>');
+        }
+
+        function copyTestResult() {
+            const result = document.getElementById('testResult').innerText;
+            navigator.clipboard.writeText(result).then(() => {
+                Swal.fire({
+                    title: '复制成功',
+                    icon: 'success',
+                    timer: 1000
+                });
+            }).catch(() => {
+                Swal.fire({
+                    title: '复制失败',
+                    text: '请手动复制结果',
+                    icon: 'error'
+                });
+            });
+        }
+
+        // 初始化
+        window.addEventListener('load', function() {
+            loadConfig();
+            
+            // 搜索框实时搜索
+            const searchInput = document.getElementById('variableSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', searchVariables);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,9 +2,6 @@
   "id": "wf_tutorial_plugin",
   "name": "插件调用教程",
   "description": "展示如何在工作流中调用各种插件",
-  "enabled": true,
-  "created_at": "2025-01-13T12:00:00",
-  "updated_at": "2025-01-13T12:00:00",
   "routes": [
     {
       "id": "route_tutorial",
@@ -63,5 +60,8 @@
       "enabled": true,
       "description": "显示插件调用结果"
     }
-  ]
+  ],
+  "enabled": false,
+  "created_at": "2025-01-13T12:00:00",
+  "updated_at": "2025-09-27T11:47:30.735550"
 }

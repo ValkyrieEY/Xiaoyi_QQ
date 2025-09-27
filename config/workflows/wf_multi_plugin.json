@@ -2,9 +2,6 @@
   "id": "wf_multi_plugin",
   "name": "多插件协作演示",
   "description": "展示如何让多个插件协同工作",
-  "enabled": true,
-  "created_at": "2025-01-13T12:00:00",
-  "updated_at": "2025-01-13T12:00:00",
   "routes": [
     {
       "id": "route_combo",
@@ -128,5 +125,8 @@
       "enabled": true,
       "description": "显示所有操作的总结"
     }
-  ]
+  ],
+  "enabled": false,
+  "created_at": "2025-01-13T12:00:00",
+  "updated_at": "2025-09-27T11:47:10.897125"
 }

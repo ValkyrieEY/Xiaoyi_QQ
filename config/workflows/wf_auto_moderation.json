@@ -2,9 +2,6 @@
   "id": "wf_auto_moderation",
   "name": "群管理自动化",
   "description": "自动检测和处理群内不当行为",
-  "enabled": true,
-  "created_at": "2025-01-13T12:00:00", 
-  "updated_at": "2025-01-13T12:00:00",
   "routes": [
     {
       "id": "route_spam_detection",
@@ -23,8 +20,12 @@
       "type": "condition",
       "config": {
         "condition": "'ADMINS' in ${user_permissions}",
-        "true_steps": ["step_ignore_admin"],
-        "false_steps": ["step_check_severity"]
+        "true_steps": [
+          "step_ignore_admin"
+        ],
+        "false_steps": [
+          "step_check_severity"
+        ]
       },
       "enabled": true,
       "description": "管理员消息不处理"
@@ -80,5 +81,8 @@
       "enabled": true,
       "description": "向管理员发送通知"
     }
-  ]
+  ],
+  "enabled": false,
+  "created_at": "2025-01-13T12:00:00",
+  "updated_at": "2025-09-27T11:47:21.273247"
 }

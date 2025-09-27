@@ -2,9 +2,6 @@
   "id": "wf_plugin_demo",
   "name": "插件调用演示",
   "description": "演示如何在工作流中调用插件",
-  "enabled": true,
-  "created_at": "2025-01-13T10:00:00",
-  "updated_at": "2025-01-13T10:00:00",
   "routes": [
     {
       "id": "route_plugin_01",
@@ -23,8 +20,12 @@
       "type": "condition",
       "config": {
         "condition": "'ADMINS' in ${user_permissions} or '管理员' in ${user_permissions}",
-        "true_steps": ["step_generate_image"],
-        "false_steps": ["step_no_permission"]
+        "true_steps": [
+          "step_generate_image"
+        ],
+        "false_steps": [
+          "step_no_permission"
+        ]
       },
       "enabled": true,
       "description": "检查用户是否有权限使用生图功能"
@@ -54,5 +55,8 @@
       "enabled": true,
       "description": "权限不足时的提示消息"
     }
-  ]
+  ],
+  "enabled": false,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-09-27T11:47:25.606517"
 }

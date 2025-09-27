@@ -2,9 +2,6 @@
   "id": "wf_daily_tasks",
   "name": "每日任务流",
   "description": "处理每日定时任务和签到功能",
-  "enabled": true,
-  "created_at": "2025-01-13T10:00:00",
-  "updated_at": "2025-01-13T10:00:00",
   "routes": [
     {
       "id": "route_morning_greeting",
@@ -62,5 +59,8 @@
       "enabled": true,
       "description": "确认签到完成"
     }
-  ]
+  ],
+  "enabled": false,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-09-27T11:47:16.365135"
 }

@@ -2,9 +2,6 @@
   "id": "wf_admin_tools",
   "name": "管理员工具流",
   "description": "为管理员提供快速管理工具的工作流",
-  "enabled": true,
-  "created_at": "2025-01-13T10:00:00",
-  "updated_at": "2025-01-13T10:00:00",
   "routes": [
     {
       "id": "route_admin_quick",
@@ -23,8 +20,12 @@
       "type": "condition",
       "config": {
         "condition": "'ADMINS' in ${user_permissions}",
-        "true_steps": ["step_parse_action"],
-        "false_steps": ["step_deny_access"]
+        "true_steps": [
+          "step_parse_action"
+        ],
+        "false_steps": [
+          "step_deny_access"
+        ]
       },
       "enabled": true,
       "description": "检查用户是否具有管理员权限"
@@ -62,5 +63,8 @@
       "enabled": true,
       "description": "确认操作已执行"
     }
-  ]
+  ],
+  "enabled": false,
+  "created_at": "2025-01-13T10:00:00",
+  "updated_at": "2025-09-27T11:47:23.578289"
 }

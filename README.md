@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/4c295469-8cd8-4406-8070-6c096e15a313" alt="Jianer_QQ_Bot Logo" width="250">
+  <img src="https://github.com/user-attachments/assets/4c295469-8cd8-4406-8070-6c096e15a313" alt="Xiaoyi_QQ_Bot Logo" width="250">
   
   # 小依 QQ 机器人 (Xiaoyi_QQ)
   ### Demo - 全新QQ机器人框架
@@ -41,133 +41,86 @@
 
 ## 🚀 快速开始
 
-### 安装要求
-- Python 3.8+（开发环境为 Python 3.13）
-- Windows 10/11（作为主流系统/Linux也可部署）
+### 系统要求
+- Python 3.8+（推荐 Python 3.13）
+- Windows 10/11 / Linux
 - 2GB+ RAM
 
-### 待完善
-- 部署教程
+### 一键部署
+```
+# 克隆项目
+git clone https://github.com/ValkyrieEY/Xiaoyi_QQ.git
+cd Xiaoyi_QQ
 
-## 🛠️ 修复工具
-#### 记忆问题
-```bash
-# 诊断记忆状态
-python test_group_notice.py
+# 安装依赖
+pip install -r requirements.txt
+
+# 启动配置向导
+python SetupWizard.py
+
+# 运行机器人
+python main.py
 ```
 
-#### AI服务问题
-```bash
-# 测试AI连接
-python test_ai_memory.py
+## 📚 文档中心
 
-# 切换AI模型
-# 使用配置向导重新配置
-```
+| 📖 文档类型 | 📝 描述 | 🔗 链接 |
+|---------|-------|-------|
+| 🚀 **快速入门** | 安装部署和基础配置 | **[安装指南](./docs/installation.md)** |
+| 🤖 **AI插件** | 多AI模型配置和管理 | **[AI插件文档](./docs/ai-plugins.md)** |
+| 🔌 **插件开发** | 插件开发和自定义 | **[开发指南](./docs/plugin-development.md)** |
+| 🔄 **工作流** | 自动化流程配置 | **[工作流文档](./docs/workflow.md)** |
+| 🔗 **API接口** | RESTful API文档 | **[API文档](./docs/api.md)** |
+| 🛠️ **故障排除** | 问题诊断和解决 | **[故障排除](./docs/troubleshooting.md)** |
 
-#### 工作流问题
-```bash
-# 测试工作流
-python test_workflow.py
-```
+> 💡 **提示**: 点击上方链接查看详细文档，新手建议从 [安装指南](./docs/installation.md) 开始。
 
-### 获取帮助
+## 🆘 获取帮助
 
-- 📖 查看 [使用文档](./docs/)
-- 🐛 提交 [Issue](https://github.com/YourRepo/issues)
+- 📖 查看 [完整文档](./docs/README.md)
+- 🐛 提交 [GitHub Issues](https://github.com/ValkyrieEY/Xiaoyi_QQ/issues)
 - 💬 加入 [QQ交流群]()
 - 📧 邮件联系: 2477194503@qq.com
 
-
 ## 🤝 贡献指南
 
-我们欢迎任何形式的贡献！无论是新功能、Bug修复、文档改进还是插件开发。
+欢迎任何形式的贡献！无论是新功能、Bug修复、文档改进还是插件开发。
 
-### 🚀 快速参与
+```
+# Fork 并克隆项目
+git clone https://github.com/ValkyrieEY/Xiaoyi_QQ.git
 
-1. **Fork本项目**
-   ```bash
-   git clone https://github.com/ValkyrieEY/Xiaoyi_QQ.git
-   ```
+# 创建功能分支
+git checkout -b feature/amazing-feature
 
-2. **创建功能分支**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
+# 提交更改
+git commit -m 'Add some AmazingFeature'
 
-3. **提交更改**
-   ```bash
-   git commit -m 'Add some AmazingFeature'
-   ```
+# 推送分支
+git push origin feature/amazing-feature
+```
 
-4. **推送分支**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-### 🏆 贡献者
-
-感谢所有为项目做出贡献的开发者！
-
-<a href="https://github.com/ValkyrieEY/Xiaoyi_QQ/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ValkyrieEY/Xiaoyi_QQ" />
-</a>
-
-### 🎖️ 特别感谢
-
+### 🏅 特别感谢
 - [SRInternet-Studio](https://github.com/SRInternet-Studio/Jianer_QQ_bot) - 提供基础框架
 - [LagrangeDev](https://github.com/LagrangeDev/Lagrange.Core) - OneBot协议实现
 - [HypeR_Bot](https://github.com/HarcicYang/HypeR_Bot) - 机器人框架支持
 
 ## 📝 开源协议
 
-本项目基于 [AGPL-3.0](LICENSE) 协议开源。
-
-使用本项目时请遵守以下要求：
-- 保留原始作者信息和版权声明
-- 任何基于本项目的衍生作品也必须开源
-- 商业使用需要遵守AGPL-3.0协议条款
-- 网络服务提供必须提供源代码
+本项目基于 [AGPL-3.0](LICENSE) 协议开源。使用本项目时请遵守相关协议条款。
 
 ## 💬 联系我们
 
-### 🔗 官方链接
-
 - 🏠 **项目主页**: [GitHub Repository](https://github.com/ValkyrieEY/Xiaoyi_QQ)
-- 📚 **使用文档**: [项目Wiki](https://github.com/ValkyrieEY/Xiaoyi_QQ/wiki)
+- 📚 **使用文档**: [项目文档](./docs/README.md)
 - 🐛 **问题反馈**: [Issues页面](https://github.com/ValkyrieEY/Xiaoyi_QQ/issues)
-- 🔄 **项目发布**: [Releases页面](https://github.com/ValkyrieEY/Xiaoyi_QQ/releases)
-
-### 👥 社区交流
-
 - 💬 **QQ交流群**: [点击加入]()
 - 📧 **邮箱联系**: 2477194503@qq.com
 - 🌐 **技术博客**: [依の技术栈](https://xun.eynet.top/)
 
-### ⭐ 支持项目
-
-如果这个项目对你有帮助，请考虑：
-
-- ⭐ 给项目点个Star
-- 🍴 Fork项目并参与开发
-- 📝 帮助完善文档
-- 🐛 报告Bug和问题
-- 💡 提出新功能建议
-- 📢 推荐给其他开发者
-
 ---
 
 <div align="center">
-
-### 🎯 项目统计
-
-<img src="https://img.shields.io/github/stars/ValkyrieEY/Xiaoyi_QQ?style=social" alt="GitHub stars">
-<img src="https://img.shields.io/github/forks/ValkyrieEY/Xiaoyi_QQ?style=social" alt="GitHub forks">
-<img src="https://img.shields.io/github/watchers/ValkyrieEY/Xiaoyi_QQ?style=social" alt="GitHub watchers">
-
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/ValkyrieEY/Xiaoyi_QQ)
-![GitHub last commit](https://img.shields.io/github/last-commit/ValkyrieEY/Xiaoyi_QQ)
-![GitHub contributors](https://img.shields.io/github/contributors/ValkyrieEY/Xiaoyi_QQ)
 
 **✨ 小依 QQ 机器人 - NTQQ Robot ✨**
 
